@@ -100,7 +100,7 @@ JVM：java虚拟机，跨平台兼容
 
 不同数据类型运算时，取数范围小的类型会自动转为取数范围大的类型
 
-![](D:\桌面\notes\java\assets\自动数据类型转换.png)
+![](D:\桌面\notes\java\java\assets\自动数据类型转换.png)
 
 ==注意==：
 
