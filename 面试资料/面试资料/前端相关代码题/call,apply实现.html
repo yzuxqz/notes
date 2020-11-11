@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=s, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      Function.prototype.Mycall = function (context) {
+        // 判断context是否传入，如果未传入则设置window
+        context = context || window;
+        // 将调用函数设为对象的方法
+        context.fn = this;
+        // 获取参数
+        var args = [...arguments].slice(1);
+        // 调用函数
+        var result = context.fn(...args);
+        // 将属性删除
+        delete context.fn;
+        return result;
+      };
+
+      Function.prototype.Myapply = function (context) {
+        context = context || window;
+        context.fn = this;
+        var args = [...arguments].slice(1);
+        var result = null;
+        if (args.length) {
+          result = context.fn(args);
+        } else {
+          result = context.fn();
+        }
+        delete context.fn;
+        return result;
+      };
+
+      function A(a) {
+        console.log(this.name);
+        console.log(a);
+      }
+      var person = {
+        name: "zs",
+      };
+      A.Mycall(person, 1);
+      console.log("-----------");
+      A.Myapply(person, [1, 2, 3]);
+    </script>
+  </body>
+</html>

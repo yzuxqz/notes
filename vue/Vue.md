@@ -1,3 +1,11 @@
+## 安装
+
+![](D:\桌面\notes\Vue\assets\vue安装.png)
+
+## MVVM
+
+![](D:\桌面\notes\Vue\assets\MVVM.png)
+
 ## 模板语法
 
 ### Vue的基本使用
@@ -25,7 +33,32 @@
 
 ### 差值表达式
 
-{{}}
+在mustache语法中，不仅仅可以直接写变量，也可以写简单的表达式
+
+Mustache：{{}}
+
+```html
+<div id="app">
+  <h2>{{message}}</h2>
+  <h2>{{message}},xqz</h2>
+<!--  在mustache语法中，不仅仅可以直接写变量，也可以写简单的表达式-->
+  <h2>{{firstName+ ' ' +lastName}}</h2>
+  <h2>{{firstName}} {{lastName}}</h2>
+  <h2>{{counter * 2}}</h2>
+</div>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello',
+      firstName: 'x',
+      lastName: 'qz',
+      counter:100
+    }
+  })
+</script>
+```
 
 ### 指令
 
@@ -45,6 +78,30 @@
   2. 在插值表达式所在的标签中添加v-cloak指令
 
 - 原理：先通过样式隐藏内容，然后再内存中进行值的替换，替换好之后再显示最终的结果
+
+```html
+<style>
+  [v-cloak]{
+    display: none;
+  }
+</style>
+<body>
+<!--在vue解析之前，div中有一个属性叫v-cloak，在解析之后会把这个属性删除-->
+<div id="app" v-cloak>
+  <h2>{{message}}</h2>
+</div>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    }
+  })
+</script>
+```
+
+
 
 #### 数据绑定
 
@@ -130,6 +187,8 @@
 
 - v-model本质原理
 
+  ![](D:\桌面\notes\Vue\assets\v-model原理.png)
+  
   ```html
   <body>
       <div id="app">
@@ -153,9 +212,9 @@
               },
           })
       </script>
-  </body>
+</body>
   ```
-
+  
   
 
 #### 事件绑定
@@ -187,9 +246,11 @@
 
 ##### 事件函数参数绑定
 
-1. 如果事件直接绑定函数名称不传参，那么默认会传递事件对象做为事件函数的第一个参数
+1. 如果事件直接绑定函数名称不传参（==不写括号==），那么默认会传递事件对象做为事件函数的第一个参数
 
-2. 如果事件绑定函数传参，那么事件函数作为最后一个参数，以$event形式进行显示传递
+2. 如果传的是变量，会去data属性里找，没有则报错
+
+3. 如果事件绑定函数传参，那么事件函数作为最后一个参数，以$event形式进行显示传递
 
    ```html
    <body>
@@ -245,10 +306,16 @@
 - 自定义按键触发
 
   Vue.config.keyCodes.a=65;
+  
+- once
+
+  点击第一次有反应
 
 #### 属性绑定
 
 将==标签的属性==和数据绑定
+
+![](D:\桌面\notes\Vue\assets\bind.png)
 
 - v-bind:属性名||:属性名
 
@@ -279,6 +346,8 @@
 #### 样式绑定
 
 ##### class样式处理
+
+![](D:\桌面\notes\Vue\assets\v-bind绑定class.png)
 
 - 对象语法
 
@@ -378,6 +447,8 @@
 
 ##### style样式处理
 
+![](D:\桌面\notes\Vue\assets\v-bind绑定style.png)
+
 - ​	对象语法
 
   ```html
@@ -434,7 +505,7 @@
 
 - v-else-if
 
-- v-show
+- v-show:切换显示与否的频率非常高的时候使用，可以提升效率
 
   原理：控制display是none还是block
 
@@ -525,7 +596,39 @@
 
 - key的作用
 
-  帮助vue区分不同元素，可以提高性能
+  ![](D:\桌面\notes\Vue\assets\key组件属性.png)
+
+  1. 帮助vue区分不同元素，可以提高性能
+  2. 如果两个key不一样，能够让vue的虚拟dom不去复用原来的元素，如果key是用的item，那么需要保证item的唯一性
+
+  ```html
+  <div id="app">
+    <span v-if="isUser">
+      <label for="username">用户账号</label>
+      <input type="text" id="username" placeholder="用户账号" key="username">
+  
+    </span>
+    <span v-else>
+          <label for="email">用户邮箱</label>
+      <input type="text" id="email" placeholder="用户邮箱" key="email">
+    </span>
+    <button @click="change">切换类型</button>
+  </div>
+  <script src="../../vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        isUser: true
+      },
+      methods: {
+        change() {
+          this.isUser = !this.isUser
+        }
+      }
+    })
+  </script>
+  ```
 
   ```html
   <li :key='item.id' v-for='item in fruits'>{{item}}</li>//没有提供id，则用key=‘index’，唯一的就可以
@@ -554,6 +657,45 @@
 
   双向数据绑定
 
+  值绑定
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+  <div id="app">
+    <!--  checkbox多选框-->
+  <!--  <input type="checkbox" value="篮球" v-model="hobbies">篮球-->
+  <!--  <input type="checkbox" value="足球" v-model="hobbies">足球-->
+  <!--  <input type="checkbox" value="乒乓球" v-model="hobbies">乒乓球-->
+  <!--  <input type="checkbox" value="羽毛球" v-model="hobbies">羽毛球-->
+    <h2>宁的爱好是{{hobbies}}</h2>
+    <label v-for="item in arguments" :for="item">
+      <input type="checkbox" :value="item" v-model="hobbies" :id="item">{{item}}
+    </label>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: 'hello',
+        isAgree: false,
+        hobbies: [],
+        arguments:['篮球','足球','羽毛球']
+      }
+    })
+  </script>
+  </body>
+  </html>
+  ```
+
+  
+
 - textarea
 
   双向数据绑定
@@ -562,11 +704,112 @@
 
   给option value值，select双向数据绑定
 
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+  <div id="app">
+    <select name="choose" id="" v-model="fruit" multiple>
+      <option value="苹果" >苹果</option>
+      <option value="香蕉" >香蕉</option>
+      <option value="榴莲" >榴莲</option>
+    </select>
+    <h2>{{fruit}}</h2>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: 'hello',
+        fruit:[]
+      }
+    })
+  </script>
+  </body>
+  </html>
+  ```
+
 - radio
 
   给表单value值，双向数据绑定
 
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+  <div id="app">
+    <label for="male">男</label>
+    <input type="radio" id="male"  value="男" v-model="sex">
+    <label for="female">女</label>
+    <input type="radio" id="female"  value="女" v-model="sex">
+    <h2>{{sex}}</h2>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: 'hello',
+        sex:'男'
+      }
+    })
+  </script>
+  </body>
+  </html>
+  ```
+
+  ==注意==：
+
+  1. 当绑定了同一个v-model时，可以把name省略，这样也是互斥的（单选）
+
 - checkbox
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+  <div id="app">
+    <!--  checkbox单选框-->
+    <!--  <label for="agree">同意</label>-->
+    <!--  <input type="checkbox" id="agree" v-model="isAgree">-->
+    <!--  <button :disabled="!isAgree">下一步</button>-->
+    <!--  <h2>{{isAgree}}</h2>-->
+  
+    <!--  checkbox多选框-->
+    <input type="checkbox" value="篮球" v-model="hobbies">篮球
+    <input type="checkbox" value="足球" v-model="hobbies">足球
+    <input type="checkbox" value="乒乓球" v-model="hobbies">乒乓球
+    <input type="checkbox" value="羽毛球" v-model="hobbies">羽毛球
+    <h2>宁的爱好是{{hobbies}}</h2>
+  </div>
+  <script src="../vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: 'hello',
+        isAgree: false,
+        hobbies: []
+      }
+    })
+  </script>
+  </body>
+  </html>
+  
+  ```
 
   给表单value值，双向数据绑定
 
@@ -642,6 +885,8 @@
   ```
 
 #### 表单域修饰符
+
+![](D:\桌面\notes\Vue\assets\v-model修饰符.png)
 
 - v-model.number
 
@@ -729,7 +974,7 @@ Vue.directive('指令的名字',{
 - `inserted`：表示元素在插入到DOM中的时候，会执行inserted函数，只执行一次
 - `update` ：VNode更新的时候调用，可能会调用多次
 
-页面上的任何一个元素想要显示，首先需要浏览器的渲染引擎将元素加载到内存中形成DOM树，也就是说执行bind函数的时候，元素还没有插入到内存中去，因为，一个元素只有插入DOM之后，才会获得焦点。所以说，在bind函数中执行el.focus()焦点事件的时机是不对的；同理可得，凡是与js样式有关的需在bind函数中执行`（如：el.style.color = 'blue'）`，而与js行为有关的，需在inserted函数中执行
+页面上的任何一个元素想要显示，首先需要浏览器的渲染引擎将元素加载到内存中形成DOM树，也就是说执行bind函数的时候，元素还没有插入到内存中去，因为，一个元素只有插入DOM之后，才会获得焦点。所以说，在bind函数中执行el.focus()焦点事件的时机是不对的；同理可得，==凡是与js样式有关的需在bind函数中执行`（如：el.style.color = 'blue'）`，而与js行为有关的，需在inserted函数中执行==
 
 #### 带参数的自定义指令
 
@@ -810,7 +1055,7 @@ binding获取指令的参数值
 - 在Vue实例中添加computed属性，直接在插值表达式中调用函数名
 - ==注意==：计算属性的数据是基于data的，data变化会引起计算属性的变化
 
-```html
+```javascript
  computed: {
                 reserveString:function(){
                     return this.msg.split('').reverse().join('');
@@ -818,9 +1063,14 @@ binding获取指令的参数值
             },
 ```
 
-- ==计算属性和方法的区别==
-  - 计算属性是基于他们的依赖进行缓存的，如果依赖不变则使用的是缓存的结果，依赖变化才重新计算
-  - 方法不存在缓存
+==计算属性和方法的区别==
+
+- 计算属性是基于他们的依赖进行缓存的，如果依赖不变则使用的是缓存的结果，依赖变化才重新计算
+- 方法不存在缓存
+
+==注意==：
+
+1. 计算属性也有set和get方法，因为一般不使用set方法所以会将set方法省略，直接写get方法
 
 ### 过滤器
 
@@ -904,6 +1154,8 @@ binding获取指令的参数值
 
 - 数据一旦发生变化就通知侦听器所绑定的方法
 
+- 一般用于监听v-model绑定的数据
+
 - 用法：
 
   ```javascript
@@ -918,6 +1170,8 @@ binding获取指令的参数值
   ```
 
 ### 生命周期
+
+![](D:\桌面\notes\Vue\assets\Vue生命周期.png)
 
 - 挂载（初始化相关属性）
 
@@ -1045,7 +1299,11 @@ Web Components通过创建封装好功能的定制元素解决组件化规范问
 
 ### 组件注册
 
-- 全局组件
+![](D:\桌面\notes\Vue\assets\注册组件的基本步骤.png)
+
+![](D:\桌面\notes\Vue\assets\注册组件步骤.png)
+
+- 全局组件：可以在多个vue实例中使用
 
 ```javascript
 Vue.component('button-counter',{
@@ -1098,13 +1356,110 @@ var HelloWorld = {
 3. 组件模板内容可以是模板字符串
 4. 组件命名方式可以是-或者驼峰命名，驼峰命名只能用在模板字符串的其他组件中，但是在普通标签模板中必须使用-的方式。
 
+### 模板的分离写法
+
+![](D:\桌面\notes\Vue\assets\模板分离的写法.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <my-cpn></my-cpn>
+</div>
+<!--script标签,类型必须是text/x-template-->
+<!--<script type="text/x-template" id="cpn">-->
+<!--<div>-->
+<!--  <h2>我是标题</h2>-->
+<!--  <p>我是内容,哈哈</p>-->
+<!--</div>-->
+<!--</script>-->
+<!--template标签-->
+<template id="cpn">
+  <div>
+    <h2>我是标题</h2>
+    <p>我是内容,哈哈</p>
+  </div>
+</template>
+<script src="../vue.js"></script>
+<script>
+  Vue.component('my-cpn',{
+    template:`#cpn`
+  })
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    }
+  })
+</script>
+</body>
+</html>
+```
+
+### 组件的数据存放问题
+
+1. 数据存放在组件自己的data属性中，组件的data属性时候一个函数，返回一个对象数据
+2. 不能使用vue实例的数据
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <my-cpn></my-cpn>
+</div>
+<template id="cpn">
+  <div>
+    <h2>我是标题</h2>
+    <p>我是内容,哈哈</p>
+    <p>{{title}}</p>
+  </div>
+</template>
+<script src="../vue.js"></script>
+<script>
+  Vue.component('my-cpn',{
+    template:`#cpn`,
+    data(){
+      return {
+        title:'abc'
+      }
+    }
+  })
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    }
+  })
+</script>
+</body>
+</html>
+```
+
+
+
 ### Vue调试工具：vue-devtools
 
-### 组件间的数据交互
+### 组件通信
+
+![](D:\桌面\notes\Vue\assets\父子组件.png)
 
 #### 父组件传子组件
 
+![](D:\桌面\notes\Vue\assets\props基本用法.png)
+
 - 父组件传值
+
+  在父组件中给对应的子组件绑定属性（注意要用v-bind才能绑定父组件中data属性里的值，否则传递的是字符串）
 
   ```html
   <menu-item title="来自父组件的值">{{msg}}</menu-item>//静态方式
@@ -1125,153 +1480,93 @@ var HelloWorld = {
       })
   ```
 
-#### props属性值类型
+##### props数据验证
 
-- String
+![](D:\桌面\notes\Vue\assets\props数据验证.png)
 
-- Number：用v-bind绑定可以在子组件中获得对应类型的数据，如果不绑定则是string类型
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <cpn :cmovies="movies"></cpn>
+</div>
+<template id="cpn">
+  <div>
+    <h2>{{cmovies}}</h2>
+  </div>
+</template>
+<script src="../vue.js"></script>
+<script>
+  const cpn={
+    template:`#cpn`,
+    data(){
+      return {}
+    },
+    props:{
+      // 1.类型限制
+      // cmovies:Array,
 
-- Boolean：用v-bind绑定可以在子组件中获得对应类型的数据，如果不绑定则是string类型
+      // 2.提供一些默认值
+      cmovies:{
+        type:Array,
+        default(){
+          return []
+        },//如果不传的默认值,类型是对象或者数组时,必须使用函数的返回值
+        required:true//必须传值,否则报错
+      }
+    }
+  }
 
-- Array
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello',
+      movies:['1','2','3']
+    },
+    components:{
+      cpn
+    }
+  })
+</script>
+</body>
+</html>
+```
 
-- Object
+##### props驼峰标识
 
-  ```html
-  <body>
-      <div id="app">
-          <div>{{pmsg}}</div>
-          <!-- pnum中有：是number类型，没有的话是string类型 ,pboo同理-->
-          <menu-item :pstr='pstr' :pnum='12' :pboo='true' :parr='parr' :pobj='pobj'></menu-item>
-      </div>
-      <script src="../js/vue.js"></script>
-      <script>
-          Vue.component('menu-item', {
-              props: ['pstr','pnum','pboo','parr','pobj'],
-              template: `<div>
-              <div>{{pstr}}</div>
-              <div>{{12 + pnum}}</div>
-              <div>{{pboo}}</div>
-              <ul>
-              <li v-for='(item,index) in parr'>{{item}}</li>
-              </ul>
-              <div>
-              <span>{{pobj.name}}</span>
-              <span>{{pobj.age}}</span>
-              </div>
-              </div>`
-          })
-          var vm = new Vue({
-              el: '#app',
-              data: {
-                  pmsg: '父组件中的内容',
-                  pstr: 'hello',
-                  parr:['apple','orange','banana'],
-                  pobj:{
-                      name:'lisi',
-                      age:'12'
-                  }
-              }
-          })
-      </script>
-  </body>
-  ```
+1. v-bind不支持驼峰命名，只能用-连接
 
 #### 子组件传父组件
 
-- 直接操作父组件传来的数据，但是prop传递数据原则是单项数据流，所以不推荐这么做
-
-正确方法：
-
-1. 通过自定义事件向父组件传值
-
-    <button @click='$emit("changecontent")'>改变父组件中的值</button>//$emit(“自定义事件名”)
+1. 子组件通过this.$emit('事件名',参数)发射事件
 
 2. 父组件监听子组件的事件
 
-    <menu-item :pmsg='pmsg' @changecontent='handle' @changefont='handle2'></menu-item>//对子组件传来的事件进行处理
+   ![](D:\桌面\notes\Vue\assets\自定义事件.png)
 
-   - 监听不传值的事件
+#### 子组件和双向绑定
 
-     ```html
-     <body>
-         <div id="app">
-             <div :style='{fontSize:fontSize + "px"}'>{{pmsg}}</div>
-             <menu-item :pmsg='pmsg' @changecontent='handle'//父组件处理
-                        @changefont='handle2'></menu-item>
-         </div>
-         <script src="../js/vue.js"></script>
-         <script>
-             Vue.component('menu-item', {
-                 props: ['pmsg'],
-                 template: `
-                 <div>
-                 <div>{{pmsg}}</div>
-     			//子组件定义事件
-                 <button @click='$emit("changecontent")'>改变父组件中的值</button>
-                 <button @click='$emit("changefont")'>改变父组件字体大小</button>
-                 </div>
-                 `
-             })
-             var vm = new Vue({
-                 el: '#app',
-                 data: {
-                     pmsg: '父组件中的内容',
-                     fontSize: 10
-                 },
-                 methods: {
-                     handle: function () {
-                         //改变父组件的值
-                         this.pmsg = this.pmsg + "1";
-                     },
-                     handle2: function () {
-                         //改变字体大小
-                         this.fontSize += 5;
-                     }
-                 },
-             })
-         </script>
-     </body>
-     ```
+1. 子组件中不能双向绑定props中的值，虽然可以更改，但是不推荐这么做，因为props中的值应该来源于父组件，子组件没有权力自己去修改
 
-- 监听传值的事件
+2. 如果要绑定props中的值，要先用data返回一个对象，然后去绑定data中的数据
 
-  1. 在$emit(“”，参数)带上参数
-  2. 在父组件的自定义监听事件中通过$event获得参数
+   ```javascript
+   data(){
+     return {
+       dnum1:this.cnum1,
+       dnum2:this.cnum2
+     }
+   }
+   ```
 
-  ```html
-  <body>
-      <div id="app">
-          <div :style='{fontSize:fontSize + "px"}'>{{pmsg}}</div>
-          <menu-item :pmsg='pmsg' @changefont='handle2($event)'></menu-item>
-      </div>
-      <script src="../js/vue.js"></script>
-      <script>
-          Vue.component('menu-item', {
-              props: ['pmsg'],
-              template: `
-              <div>
-              <div>{{pmsg}}</div>
-              <button @click='$emit("changefont",5)'>改变父组件字体大小</button>
-              </div>
-              `
-          })
-          var vm = new Vue({
-              el: '#app',
-              data: {
-                  pmsg: '父组件中的内容',
-                  fontSize: 10
-              },
-              methods: {
-                  handle2: function (val) {
-                      //改变字体大小
-                      this.fontSize += val;
-                  }
-              },
-          })
-      </script>
-  </body>
-  ```
+3. 如果要将子组件输入框的值传递给父组件，首先将v-model拆分，v-bind绑定value来显示data中的值，@input绑定事件来修改data中的值，并在事件中添加this.$emit('num2-change',this.dnum2)来发射事件，父组件来监听事件
+
+   ![](D:\桌面\notes\Vue\assets\父子组件结合双向绑定.png)
 
 #### 兄弟组件
 
@@ -1372,9 +1667,64 @@ var HelloWorld = {
 </body>
 ```
 
+### 组件访问
+
+#### 父组件直接访问子组件
+
+1. 通过$children：不常用
+
+```javascript
+    methods:{
+      btnClick(){
+        //访问子组件的methods
+        this.$children[0].showMessage()
+        //访问子组件的data
+        console.log(this.$children[0].name)
+      }
+    }
+```
+
+2.通过$ref：对象类型（默认为空）
+
+- 先在子组件上添加ref属性
+- 然后通过this.$ref获取
+
+```vue
+  <cpn ref="aaa"></cpn>
+  	methods:{
+      btnClick(){
+        console.log(this.$refs);
+      }
+```
+
+#### 子组件直接访问父组件
+
+1. 在子组件中使用this.$parent，但是一般不建议使用，因为这样会增加组件化开发的耦合度
+
+```javascript
+ ccpn: {
+            template: `#ccpn`,
+            methods: {
+              btnClick() {
+                // 访问父组件
+                console.log(this.$parent.name);
+              }
+            }
+```
+
+#### 访问根组件
+
+1. $root，即访问vue实例
+
 ### 组件插槽
 
 #### 基本使用
+
+![](D:\桌面\notes\Vue\assets\slot基本使用.png)
+
+1. 在组件中使用<slot></slot>
+2. 默认值写在标签中间
+3. 如果有多个值，同时放入组件中替换时，一起作为替换元素
 
 作用：父组件向子组件传递模板内容
 
@@ -1385,7 +1735,7 @@ var HelloWorld = {
 ```html
 <body>
     <div id="app">
-        <test-jerry>有bug</test-jerry>
+        <test-jerry>有bug</test-jerry>//标签中的内容会替换默认值
         <test-jerry>有一个bug发生</test-jerry>
     </div>
     <script src="../js/vue.js"></script>
@@ -1416,29 +1766,33 @@ var HelloWorld = {
 
 ```html
 <body>
-    <div id="app">
-        <base-layout>
-            <p slot="header">header赋值</p>
-            主要内容
-            <p slot="body">header赋值</p>
-        </base-layout>
-    </div>
-    <script src="../js/vue.js"></script>
-    <script>
-        Vue.component('base-layout', {
-            template: `
-            <div>
-            <slot name="header"></slot>
-            <slot name="body"></slot>
-            <slot></slot>
-            </div>
-            `
-        })
-        var vm = new Vue({
-            el: '#app',
-            data: {}
-        })
-    </script>
+<div id="app">
+  <cpn>
+    <span v-slot="center">666</span>
+  </cpn>
+</div>
+<template id="cpn">
+  <div>
+    <h2>我是组件</h2>
+    <slot name="left"><span>左边的</span></slot>
+    <slot name="center"><span>中间的</span></slot>
+    <slot name="right"><span>右边的</span></slot>
+  </div>
+</template>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    },
+    components: {
+      cpn: {
+        template: `#cpn`,
+      }
+    }
+  })
+</script>
 </body>
 ```
 
@@ -1459,57 +1813,115 @@ var HelloWorld = {
 
 #### 作用域插槽
 
-应用场景：父组件对子组件的内容进行加工处理
+![](D:\桌面\notes\Vue\assets\编译作用域.png)
+
+应用场景：父组件对子组件的内容进行加工处理,父组件替换子组中的标签，但是内容由子组件提供
+
+![](D:\桌面\notes\Vue\assets\作用域插槽的使用.png)
 
 步骤：
 
 1. 子组件中把插槽中的值作为属性传给父组件，当然子组件的数据也可以来自父组件
 2. 父组件通过 slot-scope=‘自定义name'，name.子组件中绑定的属性，来获得子组件传来的值，这个值就是子组件中绑定的属性对应的值，==注意==要在<template>标签中进行操作
-3. 对传来的数据进行操作，从而影响子组件slot标签中的样式
+3. 对传来的数据进行操作，从而影响父组件slot标签中的样式
 
 ```html
 <body>
-    <div id="app">
-        <fruit-list :list='list'>
-            <!-- 获取子组件插槽传来的值 -->
-            <template slot-scope='slotProps'>
-                <!-- 通过slotProp.属性名获得值 -->
-                <strong :style="{color:slotProps.info.id==2 ? fontcolor:''}">{{slotProps.info.name}}</strong>
-            </template>
+<div id="app">
+  <cpn></cpn>
+  <cpn>
+    <!--    获取子组件中的pLanguage-->
+    <template slot-scope="slot2">
+      <span>{{slot2.abc.join('-')}}</span>
+    </template>
+  </cpn>
 
-        </fruit-list>
-    </div>
-    <script src="../js/vue.js"></script>
-    <script>
-        Vue.component('fruit-list', {
-            props: ['list'],
-            template: `
-            <div>
-            <li :key='item.id' v-for='(item,index) in list'>
-                <slot :info='item'>{{item.name}}</slot>              //把插槽中的值作为属性传给父组件
-            </li>
-            </div>
-            `
-        })
-        var vm = new Vue({
-            el: '#app',
-            data: {
-                fontcolor: 'orange',
-                list: [{
-                        id: 1,
-                        name: 'apple',
-                    },
-                    {
-                        id: 2,
-                        name: 'orange',
-                    }, {
-                        id: 3,
-                        name: 'banana',
-                    }
-                ]
-            }
-        })
-    </script>
+</div>
+    <!--子组件-->
+<template id="cpn">
+  <div>
+      //作用域插槽，pLanguage通过绑定的属性名abc，传递给父组件中的template
+    <slot :abc="pLanguages">
+      <ul>
+        <li v-for="item in pLanguages">{{item}}</li>
+      </ul>
+    </slot>
+  </div>
+</template>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    },
+    components: {
+      cpn: {
+        template: `#cpn`,
+        data() {
+          return {
+            pLanguages: ['javascript', 'java', 'c']
+          }
+        },
+      }
+    }
+  })
+</script>
+</body>
+```
+
+#### 作用域插槽加具名插槽
+
+1. 在子组件中给slot标签name属性
+2. 在template标签中添加slot属性来分辨是哪一个插槽
+3. 在子组件的slot标签中绑定属性
+4. 在template中同通过slot-scope的值来获得属性值
+
+```html
+<body>
+<div id="app">
+  <cpn>
+    <!--    获取子组件中的pLanguage-->
+    <template slot-scope="slot2" slot="first">
+      <span>{{slot2.abc.join('-')}}</span>
+    </template>
+    <template slot-scope="slot3" slot="second">
+      <span>{{slot3.abcd}}</span>
+    </template>
+  </cpn>
+</div>
+<template id="cpn">
+  <div>
+    <slot :abc="pLanguages" name="first">
+      <ul>
+        <li v-for="item in pLanguages">{{item}}</li>
+      </ul>
+    </slot>
+    <slot name="second" :abcd="info">
+      <h2>第二个具名插槽</h2>
+    </slot>
+  </div>
+</template>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    },
+    components: {
+      cpn: {
+        template: `#cpn`,
+        data() {
+          return {
+            pLanguages: ['javascript', 'java', 'c'],
+            info:'222'
+          }
+        },
+      }
+    }
+  })
+</script>
 </body>
 ```
 
@@ -1527,7 +1939,7 @@ var HelloWorld = {
   5. query：查询参数，例如uname=lisi&age=12
   6. fragment：锚点(哈希Hash)，用于定位i页面的某个位置
 
-#### Restful形式的URL
+#### Resful形式的URL
 
 - http请求方式
   1. GET 查询
@@ -1554,6 +1966,8 @@ var HelloWorld = {
 #### Promise概述
 
 promise是一个对象，它可以获取异步操作的消息
+
+![](D:\桌面\notes\Vue\assets\promise的三种状态.png)
 
 #### Promise使用
 
@@ -1632,6 +2046,10 @@ promise是一个对象，它可以获取异步操作的消息
       </script>
   </body>
   ```
+
+#### 链式调用
+
+![](D:\桌面\notes\Vue\assets\promise链式调用.png)
 
 #### then参数中的函数返回值
 
@@ -2056,6 +2474,26 @@ app.put('/axios/:id', (req, res) => {
 });
 ```
 
+#### axios发送并发请求
+
+```javascript
+//发送并发请求
+axios.all([axios({
+  url:'http://123.207.32.32:8000/home/multidata'
+}),axios({
+  url:'http://123.207.32.32:8000/home/data',
+  params:{
+    type:'sell',
+    page:1
+  }
+})])
+  .then(results=>{
+    console.log(results)
+  })
+```
+
+![](D:\桌面\notes\Vue\assets\axios并发请求.png)
+
 #### axios响应结果
 
 - data：实际响应结果
@@ -2064,6 +2502,8 @@ app.put('/axios/:id', (req, res) => {
 - statusText：响应状态信息
 
 #### axios全局配置
+
+![](D:\桌面\notes\Vue\assets\常见的配置选项.png)
 
 axios.defaults.timeout = 3000;//超时时间
 
@@ -2091,12 +2531,83 @@ app.all('*', (rwq, res, next) => {
 });
 ```
 
+#### axios实例配置和模块化
+
+![](D:\桌面\notes\Vue\assets\axios实例.png)
+
+1. 通过create方法创建对应的实例，配置对应的baseURL和其他设置
+
+   ```javascript
+   //创建对应的axios实例
+   const instance1 = axios.create({
+     baseURL:'http://123.207.32.32:8000',
+     timeout:5000
+   })
+   
+   instance1({
+     url:'/home/multidata'
+   }).then(res=>{
+     console.log(res)
+   })
+   
+   instance1({
+     url:'/home/data',
+     params:{
+       type:'pop',
+       page:1
+     }
+   }).then(res=>{
+     console.log(res)
+   })
+   ```
+
+2.创建network文件夹，新建request.js,返回的是一个Promise对象
+
+```javascript
+import axios from 'axios'
+
+export function request(config) {
+  //创建实例
+  const instance = axios.create({
+    baseURL: 'http://123.207.32.32:8000',
+    timout: 5000
+  })
+  //发送真正的网络请求，instace是axios本身返回的就是promise对象
+  return instance(config)//相当于axios（config）
+}
+```
+
+3.使用
+
+```javascript
+import {request} from "./network/request";
+
+request({
+  url:'/home/data'
+}).then(res=>{
+  console.log(res)
+})
+```
+
 #### axios拦截器
 
 - 请求拦截器
 
+  ```javascript
+//axios拦截器
+  instance.interceptors.request.use(config=>{
+    console.log(config)
+    //比如config中的一些信息不符合服务器的要求
+    //比如每次发送网络请求时，希望有动画
+    //某些网络请求必须携带一些特殊的信息，比如登录（token）
+    return config
+  },err=>{
+    console.log(err)
+  })
+  ```
+  
   在发出请求之前设置一些信息
-
+  
   axios请求要到达服务器要经过拦截器
 
 ```javascript
@@ -2187,223 +2698,352 @@ app.all('*', (rwq, res, next) => {
 
 ### 路由
 
+![](D:\桌面\notes\Vue\assets\什么是路由.png)
+
 #### 后端路由
 
 - URL请求地址与服务器资源之间的对应关系
 
+![](D:\桌面\notes\Vue\assets\后端路由.png)
+
 #### 前端路由
 
-- SPA单页面开发技术核心
+![](D:\桌面\notes\Vue\assets\前后端分离阶段.png)
 
+![](D:\桌面\notes\Vue\assets\前端路由原理.png)
+
+- SPA（单页面富应用）单页面开发技术核心
 - 负责事件监听，触发事件后，通过事件函数渲染不同内容
+
+#### URL的hash
+
+![](D:\桌面\notes\Vue\assets\url的hash.png)
+
+#### H5的histroy模式
+
+1. push入栈
+2. histroy.back（）栈顶出栈,以为就是后退，histroy.forward()，把之前出栈的入栈，前进
+3. histroy.go（负数：出栈几个，正数：入栈几个）
+
+![](D:\桌面\notes\Vue\assets\H5的histroy模式.png)
+
+![](D:\桌面\notes\Vue\assets\replacestate.png)
+
+![](D:\桌面\notes\Vue\assets\go.png)
+
+### Vue-router安装
+
+![](D:\桌面\notes\Vue\assets\安装vue-router.png)
 
 ### Vue-router基本使用
 
+![](D:\桌面\notes\Vue\assets\v-router文件结构.png)
+
 步骤：
 
-1. 导入相关文件
-2. 路由标签，默认是a标签，to属性中的链接会被渲染为#/xxx
-3. 路由占位符，切换路由后显示内容的区域
-4. js中路由组件
-5. 创建路由实例对象
-6. 定义路由规则
-7. 在vue实例中挂载路由
+1. 在index.js中配置路由，导入组件，安装插件，创建router对象，加入路由映射
 
-```php+HTML
-<body>
-        <div id="app">
-            <!-- 1.路由标签，默认是a标签-->
-            <router-link to="/user">User</router-link>
-            <router-link to="/register">Register</router-link>
+   ```javascript
+   //配置路由相关信息
+   import VueRouter from 'vue-router'
+   import Vue from 'vue'
+   
+   //导入组件
+   import Home from '../components/Home'
+   import About from '../components/About'
+   //安装插件
+   Vue.use(VueRouter)
+   //路由映射
+   const routes = [
+     {
+       path: '/home',
+       component: Home
+     },
+     {
+       path: '/about',
+       component: About
+     }
+   ]
+   
+   //创建router对象
+   const router = new VueRouter({
+     routes
+   })
+   
+   export default router
+   ```
 
-            <!-- 2.路由占位符，切换路由后显示内容的区域 -->
-            <router-view></router-view>
-        </div>
-        <script src="../js/vue.js"></script>
-        <script src="../js/vue-router.js"></script>
-        <script>
-            /*jshint esversion: 6 */
-            //3.路由组件
-            const User = {
-                template: '<h1>User组件</h1>'
-            }
-            const Register = {
-                template: `<h1>Register组件</h1>`
-            }
+2. 在mian.js中的vue实例挂载路由
 
-            //4.创建路由实例对象
-            const router = new VueRouter({
-                //5.路由规则
-                routes: [{
-                        path: '/user',
-                        component: User //只接受组件对象，不接受字符串
-                    },
-                    {
-                        path: '/register',
-                        component: Register //只接受组件对象，不接受字符串
-                    }
-                ]
-            })
-            //6.把路由挂载到跟实例中
-            var vm = new Vue({
-                el: '#app',
-                router //挂载
-            })
-        </script>
-    </body>
-```
+   ```javascript
+   import Vue from 'vue'
+   import App from './App.vue'
+   import router from './router/index'
+   Vue.config.productionTip = false
+   
+   new Vue({
+     router,
+     render: h => h(App),
+   }).$mount('#app')
+   ```
 
-### 路由重定向
+3. 在App.vue中使用router-link和router-view使用
+
+   ```vue
+   <template>
+     <div id="app">
+       <router-link to="/home">首页</router-link>
+       <router-link to="/about">关于</router-link>
+       <router-view></router-view>
+     </div>
+   </template>
+   
+   <script>
+   export default {
+     name: 'App'
+   }
+   </script>
+   
+   <style>
+   
+   </style>
+   ```
+
+### 路由的默认路径
+
+![](D:\桌面\notes\Vue\assets\路由的默认路径.png)
+
+路由重定向
 
 - 在路由规则中加上redirect属性
 
   ```javascript
-              const router = new VueRouter({
-                  //5.路由规则
-                  routes: [{
-                          path: '/',
-                          redirect: '/user'
-                      },
-                      {
-                          path: '/user',
-                          component: User //只接受组件对象，不接受字符串
-                      },
-                      {
-                          path: '/register',
-                          component: Register //只接受组件对象，不接受字符串
-                      }
-                  ]
-              })
+  //路由映射
+  const routes = [
+    {
+      path:'',
+      //redirect重定向
+      redirect:'/home'
+    },
+    {
+      path: '/home',
+      component: Home
+    },
+    {
+      path: '/about',
+      component: About
+    }
+  ]
   ```
 
-### 嵌套路由
+### 路由改为histroy模式
 
-1. 在父组件模板中定义router-link和router-view
-2. 定义子组件
-3. 在父级路由中增加children属性，添加子路由规则
+![](D:\桌面\notes\Vue\assets\H5的histroy模式.png)
 
-```html
-<body>
-    <div id="app">
-        <router-link to="/user">User</router-link>
-        <router-link to="/register">Register</router-link>
+index.js中
 
-        <router-view></router-view>
-    </div>
-    <script src="../js/vue.js"></script>
-    <script src="../js/vue-router.js"></script>
-    <script>
-        const User = {
-            template: `<div>User组件</div>`
-        }
-        //1.在父组件模板中定义router-link和router-view
-        const Register = {
-            template: `<div>
-            <div>Register组件</div>
-            <router-link to="/register/tab1">Tab1</router-link>
-            <router-link to="/register/tab2">Tab2</router-link>
-            <router-view></router-view>
-            </div>
-            `
-        }
-
-        //3.定义子组件
-        const Tab1 = {
-            template: `
-            <div>Tab1组件</div>
-            `
-        }
-        const Tab2 = {
-            template: `
-            <div>Tab2组件</div>
-            `
-        }
-        //2.父级路由中通过children属性，为register添加子路由规则
-        const router = new VueRouter({
-            routes: [{
-                path: '/user',
-                component: User
-            }, {
-                path: '/register',
-                component: Register,
-                children: [{//数组形式
-                        path: '/register/tab1',
-                        component: Tab1
-                    },
-                    {
-                        path: '/register/tab2',
-                        component: Tab2
-                    }
-                ]
-            }]
-        })
-        var vm = new Vue({
-            el: '#app',
-            router
-        })
-    </script>
-</body>
+```javascript
+//创建router对象
+const router = new VueRouter({
+  routes,
+  mode:'history'//改为histroy模式
+})
 ```
 
+### router-link属性
+
+![](D:\桌面\notes\Vue\assets\router-link属性.png)
+
+==注意==：
+
+1. active-class可以在创建路由对象时统一修改，通过LinkActiveClass属性
+
+   ```javascript
+   //创建router对象
+   const router = new VueRouter({
+     routes,
+     mode:'history',
+     linkActiveClass:'active'
+   })
+   ```
+
+### 路由代码跳转
+
+==$router==:是指new的实例路由对象
+
+![](D:\桌面\notes\Vue\assets\路由代码跳转.png)
+
 ### 动态路由匹配
+
+![](D:\桌面\notes\Vue\assets\动态路由.png)
 
 1. 如果由多个url前面差不多的，只是参数发生变化
 
 2. 用/：id作为路由参数，进行动态路由匹配
 
-3. 组件中用$route.params.xxx获得路由参数
-
-   ```html
-       <body>
-           <div id="app">
-               <!-- 1.路由标签，默认是a标签-->
-               <router-link to="/user/1">User</router-link>这里需要动态路由
-               <router-link to="/user/2">User</router-link>
-               <router-link to="/user/3">User</router-link>
-               <router-link to="/register">Register</router-link>
-   
-               <!-- 2.路由占位符，切换路由后显示内容的区域 -->
-               <router-view></router-view>
-           </div>
-           <script src="../js/vue.js"></script>
-           <script src="../js/vue-router.js"></script>
-           <script>
-               /*jshint esversion: 6 */
-               //3.路由组件
-               const User = {
-                   template: '<h1>User{{$route.params.id}}组件</h1>'//获取动态路由参数
-               }
-               const Register = {
-                   template: `<h1>Register组件</h1>`
-               }
-   
-               //4.创建路由实例对象
-               const router = new VueRouter({
-                   //5.路由规则
-                   routes: [{
-                           path: '/',
-                           redirect: '/user'
-                       },
-                       {
-                           path: '/user/:id',//接受动态路由参数
-                           component: User 
-                       },
-                       {
-                           path: '/register',
-                           component: Register 
-                       }
-                   ]
-               })
-               //6.把路由挂载到跟实例中
-               var vm = new Vue({
-                   el: '#app',
-                   router //挂载
-               })
-           </script>
-       </body>
+   ```json
+   {
+     path:'/user/:userId',
+     component:User
+   }
    ```
 
-### 路由组件传参
+3. 由路由跳转的相应组件中用$route.params.xxx获得路由参数
+
+   ==$route==：是指路由规则
+
+   ```javascript
+       computed:{
+         userId(){
+           return this.$route.params.userId
+         }
+       }
+   ```
+
+### 路由懒加载
+
+![](D:\桌面\notes\Vue\assets\认识路由懒加载.png)
+
+![](D:\桌面\notes\Vue\assets\路由懒加载使用.png)
+
+```javascript
+//懒加载导入组件
+const Home = ()=>import('../components/Home')
+const About = ()=>import('../components/About')
+const User = ()=>import('../components/User')
+//安装插件
+Vue.use(VueRouter)
+//路由映射
+const routes = [
+  {
+    path:'',
+    //redirect重定向
+    redirect:'/home'
+  },
+  {
+    path: '/home',
+    component: Home
+  },
+  {
+    path: '/about',
+    component: About
+  },
+  {
+    path:'/user/:userId',
+    component:User
+  }
+]
+```
+
+==注意==：路由都要使用路由懒加载的方式去写
+
+### 嵌套路由
+
+![](D:\桌面\notes\Vue\assets\嵌套路由1.png)
+
+1. 定义组件，定义路由规则，懒加载引人二级路由组件
+
+   ```json
+   {
+     path: '/home',
+     component: Home, //一层路由
+     children: [
+       {
+         path:'',//二层路由
+         redirect:'news'
+       }
+       ,
+       {
+         path: 'news',
+         component: HomeNews
+       },
+       {
+         path: 'message',
+         component: HomeMessage
+       }]
+   },
+   ```
+
+2. 在第一层组件中，使用router-link和router-view，注意：to属性的hash值要写全
+
+   ```vue
+   <template>
+   <div>
+     <h2>我是首页</h2>
+     <p>我是首页内容</p>
+     <router-link to="/home/news">新闻</router-link>
+     <router-link to="/home/message">消息</router-link>
+     <router-view></router-view>//二级路由显示组件的地方
+   </div>
+   </template>
+   
+   <script>
+     export default {
+       name: "Home"
+     }
+   </script>
+   
+   <style scoped>
+   
+   </style>
+   ```
+
+### 路由传参
+
+![](D:\桌面\notes\Vue\assets\router传递参数方式.png)
+
+#### router-link的to中传递
+
+1. parmas，通过$route.params获取
+
+   ```javascript
+       computed:{
+         userId(){
+           return this.$route.params.userId
+         }
+       }
+   ```
+
+2. query，通过$route.query获取
+
+   ```vue
+   <template>
+     <div>
+       <h2>我是profile组件</h2>
+       <h2>{{$route.query.name}}</h2>
+       <h2>{{$route.query.age}}</h2>
+       <h2>{{$route.query.height}}</h2>
+     </div>
+   </template>
+   ```
+
+3. 参数传递，==注意==：要v-bind绑定
+
+   ```vue
+       <router-link :to="'/user/'+userId">用户</router-link>
+       <router-link :to="{
+         path:'/profile',
+         query:{
+           name:'xqz',age:12,height:1.80
+         }
+       }">档案</router-link>
+   ```
+
+#### 点击事件中传递
+
+1. 首层组件添加按钮，绑定事件
+2. $router.push入栈，对象传参
+
+```javascript
+profileClick(){
+  this.$router.push({
+    path:'/profile',
+    query:{
+      name:'cube'
+    }
+  })
+}
+```
 
 #### props的值为bool类型
 
@@ -2572,6 +3212,10 @@ app.all('*', (rwq, res, next) => {
       </body>
   ```
 
+### $route和$router的区别
+
+![](D:\桌面\notes\Vue\assets\$route和$router的区别.png)
+
 ### Vue-router命名路由
 
 - 给路由规则起一个别名，加上name属性
@@ -2628,145 +3272,146 @@ app.all('*', (rwq, res, next) => {
       </body>
   ```
 
-### vue-router编程式导航
+### Vue-router导航守卫
 
-页面导航的两种方式
+#### Vue-router全局导航守卫
 
-1. 声明式导航
+![](D:\桌面\notes\Vue\assets\为什么使用导航守卫.png)
 
-   通过点击链接实现导航的方式
+![](D:\桌面\notes\Vue\assets\导航守卫使用.png)
 
-2. 编程式导航
+1. 在路由跳转时需要改变title
 
-   通过调用JavaScript形式的API实现导航的方式
+2. 在路由规则中添加固有属性meta，将数据写入
 
-#### 常用的编程式导航API
+   ```json
+   {
+       path: '/home',
+       component: Home,
+       meta:{
+         title:'首页'//在路由规则中添加属性
+       },
+       children: [
+         {
+           path:'',
+           redirect:'news'
+         }
+         ,
+         {
+           path: 'news',
+           component: HomeNews
+         },
+         {
+           path: 'message',
+           component: HomeMessage
+         }]
+     },
+   ```
 
-this.$router.push('hash地址')：根据hash地址跳转
+3. 调用路由对象的beforeEach方法（在路由跳转时自动调用），二级路由中没有meta属性，所以统一通过to对象（实际上是去往的$route）的matched(一个数组)去获取第一个对象（一级路由）,其中有meta属性
 
-this.$router.go(n)：n为1，前进1页，n为-1.后退一页
+   ```javascript
+   router.beforeEach((to,from,next) =>{
+     //从from跳转到to
+     document.title =to.matched[0].meta.title
+     next()
+   })
+   ```
 
-```html
-<body>
-        <div id="app">
-            <router-link to="/user/1">User</router-link>
-            <router-link to="/user/2">User</router-link>
-            <router-link :to="{name:'user',params:{id:3}}">User</router-link>
-            <router-link to="/register">Register</router-link>
+#### 组件内导航守卫
 
-            <router-view></router-view>
-        </div>
-        <script src="../js/vue.js"></script>
-        <script src="../js/vue-router.js"></script>
-        <script>
-            const User = {
-                props: ['id', 'uname', 'age'],
-                template: `
-                <div>
-                <h1>User{{id + uname + age}}组件</h1>
-                <button @click="goRegister">跳转到注册页面</button>
-            </div>`,
-                methods: {
-                    goRegister: function () {
-                        this.$router.push('/register');
-                    }
-                },
-            }
-            const Register = {
-                template: `
-                <div>
-                    <h1>Register组件</h1>
-                    <button @click="goback">返回</button>
-                    </div>
-               `,
-                methods: {
-                    goback: function () {
-                        this.$router.go(-1);
-                    }
-                },
-            }
+![](D:\桌面\notes\Vue\assets\组件内导航守卫.png)
 
-            const router = new VueRouter({
-                routes: [{
-                        path: '/',
-                        redirect: '/user'
-                    },
-                    { //命名路由
-                        name: 'user',
-                        path: '/user/:id',
-                        component: User,
-                        props: route => ({
-                            uname: 'zs',
-                            age: 12,
-                            id: route.params.id
-                        })
-                    },
-                    {
-                        path: '/register',
-                        component: Register
-                    }
-                ]
-            })
-            var vm = new Vue({
-                el: '#app',
-                router //挂载
-            })
-        </script>
-    </body>
-```
+### keep-alive
 
-#### router.push()方法的参数规则
+1. keep-alive是vue的，router-view是vue-router的
 
-##### 参数为字符串
+2. 在切换路由时，会不断调用组件的created和distroyed方法，不断地创建和销毁组件，用keep-alive可以只创建一次。
 
-router.push('/home')
+   ```vue
+       <keep-alive>
+         <router-view></router-view>
+       </keep-alive>
+   ```
 
-##### 参数为对象
+3. 但是这样并不能保留之前用户地选择地路由状态
 
-router.push({ path :  '/home/:id' })
+4. 在离开前利用组件路由导航的beforeRouteLeave钩子函数来保存此时的路由path，然后在调用activated钩子函数（来到路由对应的组件时调用）来设置保存的path
 
-##### 跳转到命名路由
+   ```javascript
+   //到达当前页面时调用，前提时有keep-alive
+   activated() {
+     this.$router.push(this.path)//路由地址进栈
+   },
+   //在路由切换前调用
+   beforeRouteLeave(to ,from,next){
+     this.path=this.$route.path
+     next()
+   }
+   ```
 
-router.push( {  name: '/user ' ,params:{ userId :123 }  } )
+==总结==：
 
-##### 带查询参数
+1. keep-alive保留组件不被销毁，导航守卫保留组件状态
 
-- 在跳转时会自动转为/register？uname = ‘lisi’的形式加在url地址后面
+2. ==activated和deacrivated只有在keep-alive标签中才存在==
 
-router.push({ path: '/register' , query:{ uname: ' lisi ' }})
+3. 如果遇到了在router-view中显示，但是想要频繁创建的组件时，keep-alive有其他属性
+
+   ```vue
+   <keep-alive exclude="Profile,User">//这里是组件的name
+     <router-view></router-view>
+   </keep-alive>
+   ```
+
+   ![](D:\桌面\notes\Vue\assets\keep-alive.png)
 
 ## Vue-cli
 
+![](D:\桌面\notes\Vue\assets\什么是vue-cli.png)
+
 作用：用于生成Vue项目基础架构
 
+==注意==：
+
+1. webpack要全局安装：npm install webpack -g
+
+安装vue-cli
+
 1. npm install -g @vue/cli
+
+![](D:\桌面\notes\Vue\assets\vue-cli使用.png)
+
+![](D:\桌面\notes\Vue\assets\vue-cli3.png)
 
 ### 创建vue项目
 
 #### 基于交互命令行的方式
 
-命令行 vue create my-project创建项目
+命令行 vue create 项目名称
+
+![](D:\桌面\notes\Vue\assets\vuecli3构建项目.png)
 
 #### 基于图形化界面的方式
 
 1. 命令行vue ui
-2. Babel，Router，Linter/Formatter（ESLint+Standard config），使用配置文件
 
 ### Vue脚手架生成的项目结构
 
+![](D:\桌面\notes\Vue\assets\项目结构.png)
+
+- browsers：浏览器相关
+- gitignore：git提交时需要忽略的
+- babel：babel编译打包相关
+- package.json：依赖情况
+
+==注意==：
+
+1. 如果要添加额外的配置，新建vue.config.js文件：module.exports{}
+
 ### Vue脚手架的自定义配置
 
-- 通过package.json配置项目
-
-```javascript
-  "vue":{
-    "devServer":{
-      "port":8888,
-      "open":true
-    }
-```
-
-注意：不推荐这种配置方式，因为package.json主要用来管理包的配置信息，为了方便维护，推荐将vue脚手架相关的配置，单独定义到vue.config.js配置文件中
+![](D:\桌面\notes\Vue\assets\配置去哪里了.png)
 
 - 通过单独的配置文件配置项目
 
@@ -2782,6 +3427,272 @@ router.push({ path: '/register' , query:{ uname: ' lisi ' }})
     }
   }
   ```
+
+## Vuex
+
+### 概念
+
+![](D:\桌面\notes\Vue\assets\Vuex是做什么的.png)
+
+### 使用场景
+
+==注意==：
+
+1. getters相当于组件中的computed
+2. mutations相当于组件中的methods，因为集中状态化管理和响应式的需要，所以不能直接操作state中的数据，通过vuex中的这两个属性来操作
+
+![](D:\桌面\notes\Vue\assets\使用场景.png)
+
+### 多界面状态管理
+
+![](D:\桌面\notes\Vue\assets\多界面状态管理.png)
+
+### 使用
+
+1. 在store文件夹得index文件中，定义state和mucation，mucation中主要定义方法来操作state中的属性
+
+   ```javascript
+   import Vue from 'vue'
+   import Vuex from 'vuex'
+   
+   Vue.use(Vuex)
+   
+   export default new Vuex.Store({
+     state: {
+       counter:1000
+     },
+     mutations: {
+       //方法
+       add(state){
+         state.counter++
+       },
+       sub(state){
+         state.counter--
+       }
+     },
+     actions: {
+     },
+     modules: {
+     }
+   })
+   ```
+
+2. 通过$store.state.变量名去使用，$store.commit('方法名')去修改变量
+
+   ```html
+   <h1>{{$store.state.counter}}</h1>
+   <button @click="add">+</button>
+   <button @click="sub">-</button>
+   <script>
+     import HelloVuex from "./components/HelloVuex";
+   
+     export default {
+       name: 'App',
+       methods: {
+         add() {
+           //提交到vuex的mutations中定义的方法
+           this.$store.commit('add')
+         },
+         sub() {
+           this.$store.commit('sub')
+         }
+       },
+       components: {
+         HelloVuex
+       }
+     }
+   </script>
+   ```
+
+   ![](D:\桌面\notes\Vue\assets\vuex案例.png)
+
+#### State
+
+![](D:\桌面\notes\Vue\assets\state单一状态树.png)
+
+#### Getters
+
+![](D:\桌面\notes\Vue\assets\vuex中的getters.png)
+
+1. getters相当于组件中的计算属性computed
+
+2. getters中的函数可以接收2个参数，第一个为state对象，第二个为getters对象
+
+3. 可以通过getters对象来调用一些方法
+
+4. 如果要传参，没有第三个参数的位置，此时返回值是一个函数，然后掉用的时候传参
+
+   ```javascript
+   <h2>{{$store.getters.moreAgeStu(15)}}</h2>
+       moreAgeStu(state) {
+         return function (age) {
+           return state.students.filter(s => s.age > age)
+         }
+       }
+   ```
+
+![](D:\桌面\notes\Vue\assets\getters作为参数和传递参数.png)
+
+#### Mutation
+
+1. 在mutation中定义方法
+
+2. 在组件的methods中通过this.$store.commit('mutation中定义的方法名')来对state中的数据进行操作
+
+   ```javascript
+         add() {
+           //提交到vuex的mutations中定义的方法
+           this.$store.commit('add')
+         },
+   ```
+
+3. 如果在提交commit时需要提交参数
+
+   ```javascript
+         addCount(count){
+           this.$store.commit('incrementCount',count)
+         }
+   ```
+
+4. mutation中接收参数
+
+   ```javascript
+   incrementCount(state,count){//第一个参数为state，第二个为传入的参数
+     state.counter+=count
+   }
+   ```
+
+![](D:\桌面\notes\Vue\assets\Mutation传递参数.png)
+
+##### 提交风格
+
+![](D:\桌面\notes\Vue\assets\Mutation提交风格.png)
+
+##### 类型常量
+
+1. 在store目录下新建一个mutations-types文件，export const name=’‘
+
+   来定义常量=mutations中的方法名
+
+2. 在mutations中,[常量]（）{}来定义方法，之后在commit中直接提交常量名
+
+![](D:\桌面\notes\Vue\assets\Mutations类型常量.png)
+
+##### Mutation同步函数
+
+1. Mutation中必须是同步函数，否则devtools不能监控哪个变量的变化
+
+![](D:\桌面\notes\Vue\assets\Mutation同步函数.png)
+
+#### Action
+
+相当于一个中转站
+
+1. 和mutation相似，用于存放异步函数，参数为context
+
+   ```javascript
+     actions: {
+       //context上下文,相当于$store
+       aUpdateInfo(context){
+         setTimeout(()=>{
+           context.commit('add')//提交到mutation中的方法
+         },1000)
+       }
+     }
+   ```
+
+2. 使用时，通过$store.dispath('方法名')提交
+
+   ```javascript
+         aupdateInfo(){
+           this.$store.dispatch('aUpdateInfo')//提交到action中的方法
+         }
+   ```
+
+3. 如果异步完成后需要知道，则可以返回promise对象
+
+   ```javascript
+   actions: {
+       //context上下文,相当于$store
+       aUpdateInfo(context, payload) {
+           //返回一个promise对象
+         return new Promise((resolve, reject) => {
+           setTimeout(() => {
+             context.commit('add')
+             resolve('ok')
+           }, 1000)
+         })
+       }
+     },
+   ```
+
+4. 通过then获取数据
+
+   ```javascript
+         aupdateInfo(){
+           this.$store.dispatch('aUpdateInfo','携带的信息')
+           .then((res)=>{
+             console.log(res)//ok
+           })
+         }
+   ```
+
+#### Modules
+
+作用：防止state过于臃肿
+
+![](D:\桌面\notes\Vue\assets\Modules.png)
+
+1. 定义对象ModuleA，在modules中使用
+
+2. ModuleA中的getters有三个参数，最后一个是根state
+
+   ```javascript
+     getters:{
+         //自身模块中的state和getters，rootstate是根state
+       aadd(state,getters,rootState){
+         return state.num+rootState.counter
+       }
+     }
+   ```
+
+3. 使用模块中的state和getters
+
+   ```html
+       <h2>{{$store.state.a.num}}</h2>
+       <h2>{{$store.getters.aadd}}</h2>
+   ```
+
+4. mutations和actions
+
+   ```json
+     mutations: {
+       updateName(state, payload) {
+         state.num = payload
+       }
+     },
+     actions: {
+       aupdateIndo(context) {
+         setTimeout(() => {
+           context.commit('updateInfo', 2001)
+         }, 1000)
+       }
+     }
+   ```
+
+   ```JavaScript
+         asyncUpdateInfo(){
+           this.$store.dispatch('aupdateIndo')
+         }
+   ```
+
+项目结构
+
+1. 将根中的每一个对象，除了state都单独抽出来
+2. 再把moduleA放在modules文件夹中
+
+![](D:\桌面\notes\Vue\assets\modules结构.png)
+
 
 
 ## Element-UI

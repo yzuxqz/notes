@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+     * @param {number} n
+     * @param {number} k
+     * @return {string}
+    */
+    var getPermutation = function(n, k) {
+        let str="";
+        var a=[1,2,3,4,5,6,7,8,9];
+        var arr=[];
+        k--;// 因为发现每次就剩最后两位的时候总是会多选
+        arr[0]=1;
+        for(let i=1;i<=n;i++)
+        {
+            arr[i]=arr[i-1]*i;
+        }
+        while(n)
+        {
+            var sum=arr[n-1];
+            var num=Math.floor(k/sum);
+            str+=a[num];
+            a.splice(num,1);
+            k=k%sum;
+            n--;
+        }
+        return str;
+    };
+    // console.log(num);
+    getPermutation(3,3);
+    </script>
+</body>
+</html>

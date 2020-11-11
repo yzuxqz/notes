@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        /*
+            typeof对于基本数据类型判断是没有问题的，但是遇到引用数据类型（如：Array）是不起作用的。
+        */
+        //浅拷贝
+        /*
+        function shallowCopy(object) {
+            if (!object || typeof object !== 'object')
+                return;
+            var newObject = Array.isArray(object) ? [] : {};
+            for (let i in object) {
+                if (object.hasOwnProperty(i)) {
+                    newObject[i] = object[i];
+                }
+            }
+            return newObject;
+        }
+        var a = {
+            id: 1,
+            msg: {
+                age: 18
+            }
+        }
+        var b = {};
+        Object.assign(b, a);
+        // var b = shallowCopy(a);
+        b.msg.age = 123;
+        console.log(a);
+        //深拷贝
+        function deepCopy(object) {
+            if (!object || typeof object !== 'object')
+                return;
+            var newObject = Array.isArray(object) ? [] : {};
+            for (let i in object) {
+                if (object.hasOwnProperty(i)) {
+                    if (typeof object[i] == 'object') {
+                        newObject[i] = deepCopy(object[i]);
+                    } else {
+                        newObject[i] = object[i];
+                    }
+                }
+            }
+            return newObject;
+        }
+        var c = deepCopy(a);
+        c.msg.age = 43;
+        console.log(a);*/
+        function shallowCopy(object) {
+            if (!object || typeof object != 'object')
+                return;
+            var newObject = Array.isArray(object) ? [] : {};
+            for (var i in object) {
+                if (object.hasOwnProperty(i)) {
+                    newObject[i] = object[i]
+                }
+            }
+            return newObject;
+        }
+        var a = {
+            1: 12,
+            msg: { age: 18 }
+        }
+        // var b = shallowCopy(a);
+        // console.log(b);
+        // b.msg.age = 123;
+        // console.log(a);
+        function deepCopy(object) {
+            if (!object || typeof object != 'object') {
+                return object;
+            }
+            var newObject = Array.isArray(object) ? [] : {};
+            for (let i in object) {
+                if (object.hasOwnProperty(i)) {
+                    if (typeof (object[i]) == 'object') {
+                        newObject[i] = deepCopy(object[i]);
+                    } else {
+                        newObject[i] = object[i];
+                    }
+                }
+            }
+            return newObject;
+        }
+        var b = deepCopy(a);
+    </script>
+</body>
+
+</html>

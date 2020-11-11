@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * Definition for singly-linked list.
+    * function ListNode(val) {
+    *     this.val = val;
+    *     this.next = null;
+    * }
+    */
+
+    /**
+    * @param {ListNode} headA
+    * @param {ListNode} headB
+    * @return {ListNode}
+    */
+    var getIntersectionNode = function(headA, headB) {
+        var h1=headA;
+        var h2=headB;
+        var len1=0,len2=0;
+        while(h1){
+            h1=h1.next;
+            len1++;
+        }
+        while(h2){
+            h2=h2.next;
+            len2++;
+        }
+        var flag=0;
+        h1=headA;
+        h2=headB;
+        if(len1>len2){    
+            flag=len1-len2;
+            while(flag--)
+            {
+                h1=h1.next;
+            }
+            while(h1&&h2){
+                if(h1==h2){
+                    return h1;
+                }
+                h1=h1.next;
+                h2=h2.next;
+            }
+            return null;
+        }else{
+            flag=len2-len1;
+            while(flag--)
+            {
+                h2=h2.next;
+            }
+            while(h1&&h2){
+                if(h1==h2){
+                    return h1;
+                }
+                h1=h1.next;
+                h2=h2.next;
+            }
+            return null;
+        }
+    };
+
+    </script>
+</body>
+</html>

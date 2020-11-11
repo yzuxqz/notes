@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * Definition for singly-linked list.
+    * function ListNode(val) {
+    *     this.val = val;
+    *     this.next = null;
+    * }
+    */
+    /**
+    * @param {ListNode} head
+    * @param {number} m
+    * @param {number} n
+    * @return {ListNode}
+    */
+    var reverseBetween = function(head, m, n) {
+        if(m==n)
+        {
+            return head;
+        }
+        var count=1;
+        var num=head;
+        var stack=[];
+        while(num!=null)
+        {
+            if(count>=m&&count<=n)
+            {
+                stack.push(num.val);
+            }
+            count++;
+            num=num.next;
+        }
+        num=head;
+        count=1;
+        while(num!=null)
+        {
+            if(count>=m&&count<=n)
+            {
+                num.val=stack.pop();
+            }
+            count++;
+            num=num.next;
+        }
+        return head;
+    };
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * @param {number[][]} M
+    * @return {number}
+    */
+    var per=[];
+    var find=function(x)
+    {
+        if(x==per[x])
+        {
+            return x;
+        }
+        return per[x]=find(per[x]);
+    }
+    var link=function(x,y){
+        var xx=find(x),yy=find(y);
+        if(xx!=yy)
+        {
+            per[xx]=yy;
+        }
+    }
+    var findCircleNum = function(M) {
+        for(var i=0;i<M.length;i++)
+        {
+            per[i+1]=i+1;
+        }
+        var ans=0;
+        for(var i=0;i<M.length;i++)
+        {
+            for(var j=i+1;j<M.length;j++)
+            {
+                if(M[i][j]==1)
+                {
+                    link(i+1,j+1)
+                }
+            }
+        }
+        for(var i=1;i<=M.length;i++)
+        {
+            if(per[i]==i)
+            {
+                ans++;
+            }
+        }
+        return ans;
+        // console.log(ans);
+    };
+    var ary=[[1,1,0],
+             [1,1,1],
+             [0,1,1]];
+    findCircleNum(ary);
+    </script>
+</body>
+</html>

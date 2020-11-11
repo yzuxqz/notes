@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      (function () {
+        function add(n) {
+          return this + n;
+        }
+        function minus(n) {
+          return this - n;
+        }
+        (Number.prototype.add = add), (Number.prototype.minus = minus);
+      })();
+      console.log((5).add(3).minus(2));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        /**
+         * @param {string} path
+         * @return {string}
+         */
+        var simplifyPath = function (path) {
+            var s = path.replace(/\/+/g, "/");
+            var num = s.split('/');
+            var ans = [];
+            console.log(num);
+            console.log(s);
+            for (var i in num) {
+                if (num[i] == '.') {
+                    continue;
+                } else if (num[i] == '..') {
+                    if (ans.length) {
+                        ans.pop();
+                    }
+                } else {
+                    if (num[i] == '')
+                        continue;
+                    ans.push(num[i]);
+                }
+            }
+            console.log(ans);
+            return '/' + ans.join("/");
+        };
+        var x = simplifyPath("/home/");
+        console.log(x);
+    </script>
+</body>
+
+</html>

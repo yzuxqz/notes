@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        // function currying(fn, length) {
+        //     length = length || fn.length;
+        //     return function (...args) {
+        //         if (args.length >= length) {
+        //             return fn(...args);
+        //         } else {
+        //             return currying(fn.bind(null, ...args), length - args.length);
+        //         }
+        //     }
+        // }
+        // var add = currying((...args) => { return eval(args.join('+')) }, 4);
+        function currying(fn, length) {
+            length = length || fn.length;
+            return function (...args) {
+                if (args.length >= length) {
+                    return fn(...args);
+                } else {
+                    return currying(fn.bind(null, ...args), length - args.length);
+                }
+            }
+        }
+        var add = currying((...args) => eval(args.join('+')), 3);
+        console.log(add(1, 2)(3));
+    </script>
+</body>
+
+</html>

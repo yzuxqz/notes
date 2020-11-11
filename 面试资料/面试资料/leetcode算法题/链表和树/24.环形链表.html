@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        /**
+    * Definition for singly-linked list.
+    * function ListNode(val) {
+    *     this.val = val;
+    *     this.next = null;
+    * }
+    */
+
+    /**
+    * @param {ListNode} head
+    * @return {ListNode}
+    */
+    var detectCycle = function(head) {
+        var current=head;
+        while(current)
+        {
+
+            if(current.flag==undefined)
+            {
+                current.flag++;
+            }else{
+                return current;
+            }
+            current=current.next;
+        }
+        return null;
+    };
+    </script>
+</body>
+</html>

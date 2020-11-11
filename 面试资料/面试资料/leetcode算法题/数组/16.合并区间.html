@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        /**
+        * @param {number[][]} intervals
+        * @return {number[][]}
+        */
+        function compare(x,y)
+        {
+            if(x[0]==y[0])
+            {
+                return x[1]-y[1];
+            }
+            return x[0]-y[0];
+        }
+
+        var merge = function(num) {
+            for(var i in num)
+            {
+                if(num[i][0]>num[i][1])
+                {
+                    [num[i][0],num[i][1]]=[num[i][1],num[i][0]];
+                }
+            }
+            var vs=[];
+            num.sort(compare);
+            for(var i=0;i<num.length;i++)
+            {
+                if(vs.length==0)
+                {
+                    vs.push(num[i]);
+                }else{
+                    var flag=vs[vs.length-1];
+                    if(flag[1]<num[i][0])
+                    {
+                        // vs[vs.length]=num[i];
+                        vs.push(num[i]);
+                    }
+                    else if(flag[1]>=num[i][0]){
+                       vs[vs.length-1]=[flag[0],Math.max(num[i][1],flag[1])];
+                    }
+                }
+                // console.log(i,vs);
+            }
+            console.log(vs);
+            return vs;
+        };
+        var a=[[1,3],[2,6],[8,10],[15,18]];
+        // var a=[[1,4],[4,5]];
+        merge(a);
+    </script>
+
+</body>
+</html>

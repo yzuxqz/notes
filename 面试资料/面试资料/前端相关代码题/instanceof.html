@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var new_instanceof = function (leftvalue, rightvalue) {
+        leftvalue = leftvalue.__proto__;
+        rightvalue = rightvalue.prototype;
+        while (true) {
+          if (leftvalue == rightvalue) {
+            return true;
+          } else if (leftvalue == null) {
+            return false;
+          } else {
+            leftvalue = leftvalue.__proto__;
+          }
+        }
+      };
+      var Person = function () {};
+      var yyPerson = function () {};
+      yyPerson.prototype = new Person();
+      yyPerson.prototype.construtor = yyPerson;
+      var linglong = new yyPerson();
+      console.log(linglong instanceof Person);
+      console.log(linglong instanceof yyPerson);
+      console.log(new_instanceof(linglong, Object));
+    </script>
+  </body>
+</html>

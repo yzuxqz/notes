@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var a = "hello";
+      let b = "hi";
+      // 1.不存在变量提升
+      console.log(c); //undefined  如果用 let c='c' 则会报错
+      var c = "c";
+
+      // 2.同一个作用域下不能重复定义同一个名字
+      var d = 1;
+      var d = 100;
+      console.log(d); //100  将var 变成let 会报错
+
+      // 3.有着严格的作用域 函数作用域 块级作用域
+      function fun() {
+        var n = 10;
+        if (true) {
+          var n = 100;
+        }
+        console.log(n); //100
+      }
+      function fun() {
+        let n = 10;
+        if (true) {
+          let n = 100;
+        }
+        console.log(n); //10
+      }
+      // const 声明一个只读的常量，一旦身边，常量的值不能改变 不针对引用类型比如对象和数组
+      const w = 100;
+      // w=200;
+      // console.log(w)// error
+
+      // 箭头函数
+      /* 优点: 1.写法更简洁 
+        2.没有自己的this和argument 箭头函数的this是继承函数所处上下文的this(使用call 或者 apply s无法改变指向) 只能基于...ARG获取传递的参数集合(数组) 
+        普通函数：根据调用我的人（谁调用我，我的this就指向谁）
+        箭头函数：根据所在的环境（我再哪个环境中，this就指向谁）
+        */
+      // 实现each功能
+      var arr = [1, 2, 3, 4, "aa", 5];
+      Array.prototype.each = function (callback) {
+        for (let i = 0; i < this.length; i++) {
+          if (callback(this[i], i)) {
+            this[i] = callback(this[i], i);
+          } else {
+            break;
+          }
+        }
+        return this;
+      };
+      arr = arr.each((item, index) => {
+        if (isNaN(item)) {
+          return false;
+        }
+        return item * 10;
+      });
+      console.log(arr); // [10, 20, 30, 40, "aa", 5]
+
+      //如何将一个字符串的大小写取反
+      let str = "zhuFengxunDE周老师henshuai!";
+      console.log(str);
+      str = str.replace(/[a-zA-z]/g, (item) => {
+        // if(item.toUpperCase()===item)
+        // {
+        //     item=item.toLowerCase();
+        // }else{
+        //     item=item.toUpperCase();
+        // }
+        return item === item.toUpperCase()
+          ? item.toLowerCase()
+          : item.toUpperCase();
+      });
+      console.log(str);
+
+      // 数据结构 set map
+      // set 类似于数组 成员唯一
+      // map 类似于对象
+      const s = new Set();
+      s.add(1).add(2);
+      var arr2 = [1, 1, 1, 2, 3, 2, 3, 5, 7];
+      var arr3 = [...new Set(arr2)]; // set 去重
+
+      const m = new Map();
+      m.set("name", "amy").set("age", 18);
+      // for of
+      for (let [key, value] of m) {
+      }
+    </script>
+  </body>
+</html>

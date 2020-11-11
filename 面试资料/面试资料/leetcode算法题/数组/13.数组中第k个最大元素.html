@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    function compare(a,b){
+        return a-b;
+    }
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    var longestConsecutive = function(nums) {
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        nums.sort(compare);
+        var ans=1;
+        var sum=0;
+        for(var i=1;i<nums.length;i++)
+        {
+            if(nums[i]-nums[i-1]==1)
+            {
+                ans++;
+            }else if(nums[i]-nums[i-1]==0)
+            {
+                continue;
+            }
+            else{
+                sum=Math.max(ans,sum);
+                ans=1;
+            }
+        }
+        sum=Math.max(ans,sum);
+        return sum;
+    };
+   var x=longestConsecutive([1,2,0,1]);
+    console.log(x);
+    </script>
+</body>
+</html>

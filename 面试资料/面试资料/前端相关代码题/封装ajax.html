@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    function ajax(options) {
+      var defaults = {
+        type: "get",
+        url: "",
+        data: {},
+        header: {
+          "Content-Type": "application/s-www-form-urlencoded",
+        },
+        success: function () {},
+        error: function () {},
+      };
+      Object.assign(defaults, options);
+      var xhr = new XMLHttpRequest();
+      var params = "";
+      for (var attr in defaults.data) {
+        params += attr + "=" + defaults.data[attr] + "&";
+      }
+      params = params.substr(0, params.length - 1);
+      if (defaults.type == "get") defaults.url += "?" + params;
+      xhr.open(defaults.type, defaults.url);
+      if (defaults.type == "post") {
+        var contentType = defaults.header["Content-Type"];
+        xhr.setRequestHeader("Content-Type", contentType);
+        if (contentType == "application/json") {
+          xhr.send(JSON.stringify(defaults.data));
+        } else {
+          xhr.send(params);
+        }
+      } else {
+        xhr.send();
+      }
+
+      xhr.onload = function () {
+        var contentType = xhr.getResponseHeader("Content-Type");
+        var responseText = xhr.responseText;
+        if (contentType.includes("application/json")) {
+          responseText = JSON.parse(responseText);
+        }
+        if (xhr.status == 200) {
+          defaults.success(responseText);
+        } else {
+          defaults.error(responseText);
+        }
+      };
+    }
+    ajax({
+      type: "get",
+      url: "http://locahost:3000/responseData",
+      data: {},
+      success: function (data) {
+        console.log("这是成功函数", data);
+      },
+      error: function (data) {
+        console.log("这是失败函数", data);
+      },
+    });
+  </script>
+</body>
+
+</html>

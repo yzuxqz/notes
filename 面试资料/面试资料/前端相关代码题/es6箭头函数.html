@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // ES6箭头函数
+        // 两道优势 1.不绑定this arguments 2.更简化的代码语法
+        function Person(){
+            this.name='zs';
+        }
+        var a=Person();
+        // Person.prototype.sayHello=()=>{
+        //     console.log(this);
+        // }
+        // 输出 window
+        Person.prototype.sayHello=function(){
+            console.log(this);
+        }
+        // 输出 Person;
+        var p1=new Person();
+        p1.sayHello();
+
+        //es6 this指向问题
+        // 箭头函数和普通函数的区别如下。
+        // 普通函数：根据调用我的人（谁调用我，我的this就指向谁）
+        // 箭头函数：根据所在的环境（我再哪个环境中，this就指向谁）
+        // 箭头函数没有自己的this, 它的this是继承而来; 
+        // 默认指向在定义它时所处的对象(宿主对象),而不是执行时的对象, 定义它的时候,可能环境是window; 
+        // 箭头函数可以方便地让我们在 setTimeout ,setInterval中方便的使用this
+        var age=100;
+        var obj={
+            age:20,
+            say:()=>{
+                return this.age;
+            }
+        }
+        console.log(obj.say());//100
+    </script>
+</body>
+</html>

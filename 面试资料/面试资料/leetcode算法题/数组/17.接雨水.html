@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * @param {number[]} height
+    * @return {number}
+    */
+    var trap = function(ary) {
+        var len1=ary.length;
+        var L=0;
+        while(L<len1)
+        {
+            if(ary[L]>0)
+            {
+                break;
+            }
+            L++;
+        }
+        var ans=0;
+        var sum=0;
+        for(var i=L;i<len1;i++)
+        {
+            if(ary[i]>=ary[L])
+            {
+                // console.log(i,ans);
+                sum+=ans;
+                ans=0;
+                L=i;
+            }else{
+                ans+=ary[L]-ary[i];
+            }
+        }
+        ans=0;
+        var R=len1-1;
+        while(R>=0)
+        {
+            if(ary[R]>0)
+            {
+                break;
+            }
+            R--;
+        }
+        for(var i=R;i>=0;i--)
+        {
+            if(ary[i]>ary[R])
+            {
+                // console.log(i,ans);
+                sum+=ans;
+                ans=0;
+                R=i;
+            }else{
+                ans+=ary[R]-ary[i];
+            }
+        }
+        // console.log(sum);
+        return sum;
+    };
+    // var a=[0,1,0,2,1,0,1,3,2,1,2,1];
+    var a=[2,0,2];
+    trap(a);
+    </script>
+</body>
+</html>

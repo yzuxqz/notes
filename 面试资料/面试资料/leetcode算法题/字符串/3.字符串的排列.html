@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script text="text/javascript">
+    var isSame=function(num1,num2){
+        for(var i in num1)
+        {
+            if(num1[i]!=num2[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    } 
+    var checkInclusion = function(s1,s2) {
+        if(s1.length==0)
+        return True;
+        if(s2.length==0)
+            return false;
+        var num1=[];
+        var num2=[];
+        var len1=s1.length;
+        var len2=s2.length;
+        for(let i=0;i<len1;i++)
+        {
+            if(num1[s1[i]]==undefined)
+            {
+                num1[s1[i]]=1;
+            }else{
+                num1[s1[i]]++;
+            }
+            if(num2[s2[i]]==undefined)
+            {
+                num2[s2[i]]=1;
+            }else{
+                num2[s2[i]]++;
+            }
+        }
+        let flag=0;
+        flag=isSame(num1,num2);
+        for(let i=len1;i<=len2;i++)
+        {
+            num2[s2[i-len1]]--;
+            if(num2[s2[i]]==undefined||num2[s2[i]]==0)
+            {
+                num2[s2[i]]=1;
+            }else{
+                num2[s2[i]]++;
+            }
+            flag=Math.max(flag,isSame(num1,num2));
+        }
+        return flag==1 ? true:false;
+    };
+    console.log(checkInclusion("abc","cccccbabbbaaaa"));
+    </script>
+</body>
+</html>

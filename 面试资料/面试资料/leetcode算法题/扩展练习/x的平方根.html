@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * @param {number} x
+    * @return {number}
+    */
+    var mySqrt = function(x) {
+        var l=0,r=x/2+1;
+        var ans;
+        while(l<=r)
+        {
+            var mid=Math.floor((l+r)/2);
+            if(mid*mid<=x)
+            {
+                ans=mid;
+                l=mid+1;
+            }else{
+                r=mid-1;
+            }
+        }
+        console.log(ans);
+        return ans;
+    };
+    mySqrt(8);
+    </script>
+</body>
+</html>

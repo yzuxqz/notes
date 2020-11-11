@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        /**
+        * @param {number[][]} triangle
+        * @return {number}
+        */
+        var minimumTotal = function(nums) {
+            for(var i=nums.length-2;i>=0;i--)
+            {
+                for(var j=nums[i].length-1;j>=0;j--)
+                {
+                    num[i][j]+=Math.min(num[i+1][j],num[i+1][j+1]);
+                }
+            }
+        };
+        return num[0][0];
+    </script>
+</body>
+</html>

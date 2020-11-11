@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+     * @param {number[]} nums
+     * @return {number[][]}
+     */
+    function compare(a,b){
+        return a-b;
+    }
+    var threeSum = function(nums) {
+        var vs=[];
+        nums.sort(compare);
+        var len1=nums.length;
+        for(var i=0;i<len1;i++)
+        {
+            if(nums[i]==nums[i-1]&&i-1>=0)
+            {
+                continue;
+            }
+            if(nums[i]>0)
+            {
+                return vs;
+            }
+            var L=i+1;
+            var R=len1-1;
+            // console.log(i,L,R);
+            while(L<R)
+            {
+                if(nums[i]+nums[L]+nums[R]==0)
+                {
+                    vs.push([nums[i],nums[L],nums[R]]);
+                    while(L<R&& nums[L]==nums[L+1])
+                    {
+                        L++;
+                    }
+                    while(L<R&&nums[R]==nums[R-1])
+                    {
+                        R--;
+                    }
+                    L=L+1,
+                    R=R-1;
+                }
+                else if(nums[i]+nums[L]+nums[R]<=0)
+                {
+                    L++;
+                }else{
+                    R--;
+                }
+            }
+        }
+        return vs;
+        // splice 和 slice 相对立 前者是删除 或者截取 splice(删除位置,删除长度)
+        // fill 相当于初始化
+        // split 是字符串按照某一特性进行截取
+    };
+    nums =[-1, 0, 1, 2, -1, -4];
+    var x=threeSum(nums);
+    console.log(x);
+    </script>
+</body>
+</html>

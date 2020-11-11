@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        body{
+            height: 100%;
+        }
+        .one{
+            width: 10vh;
+            height:10%;
+            background-color: darkblue;
+        }
+        .two{
+            width: 20%;
+            height: 0;
+            padding-bottom: 20%;
+            background-color: darkkhaki;
+        }
+        .three{
+            width: 30%;
+            background-color: red;
+        }
+        .three::after{
+            content: '';
+            display: block;
+            padding-top: 100%;
+        }
+        .out{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+        .first{
+            width: 100px;
+            height: 100%;
+            background-color: red;
+        }
+        .second{
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+<body>
+    <div class="out">
+        <div class="first">
+            <div class="second">
+    
+            </div>
+        </div>
+    </div>
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+</body>
+</html>

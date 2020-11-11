@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Map和Set</title>
+	<!-- ES6引入新的数据类型Map和Set -->
+	<!-- Map是一组键值对的结构,具有极快的查找速度 -->
+</head>
+
+<body>
+	<script type="text/javascript">
+		let oneMap = new Map();
+
+		// 下面来看set集合
+		// Set和Map类似,也是一组key的结合,但是不存储value,由于key不重复,所以Set中没有重复的plus.key
+		// 初始化set需要传入一个一维数组
+		var mySet = new Set([1, 2, 3]);
+		// 或使用add方法进行添加
+		var secondSet = new Set();
+		secondSet.add('li');
+		secondSet.add('niu');
+		// 注意添加相同的元素会自动去重
+		secondSet.add('li');
+		console.log(secondSet.size) //长度还是2
+		// delete(key)可以删除元素
+		secondSet.delete('li');
+		console.log(secondSet.size);
+
+
+		// 迭代器 iterable,可以用于Map Set和Array
+		// 具有iterabl类型的集合,可以通过新的for....of循环遍历,并且遍历得到的是value,而不是key
+		for (var x of oneMap) {
+			console.log(x.toString());
+			// zhou,98
+			// yang,87
+			// niu,99
+		}
+		// 对于map集合,我们可以获取key以及对应的value
+		for (var x of oneMap) {
+			console.log(x[0] + " " + x[1]);
+			// zhou 98
+			// yang 87
+			// niu 99
+		}
+		// 对于set集合
+		for (var x of secondSet) {
+			console.log(x); // 结果是niu
+		}
+
+
+		// 下面来看下for..in和for...of的区别
+		// for..in实际上遍历的是对象的属性名称,对于数组Array来说,实际上也是对象,她的每个元素的索引都被视为属性
+		//;当我们手动给数组对象添加额外的属性时候,使用for..in就会带来意外的效果
+		var myArray = [1, 3, 5];
+		myArray.name = 'heihei';
+		for (var x in myArray) {
+			console.log(x);
+			// 结果是 0 1 2 name,这里把name也给遍历出来了;
+		}
+		// 但是使用for..of就不会出现这样的问题,他只循环集合本身的元素
+		for (var x of myArray) {
+			console.log(x);
+			// 结果是 1 3 5
+		}
+
+
+		// forEach方法是iterable内置的方法,接收一个函数,每次迭代就自动回调该函数
+		myArray.forEach(function (element, index, array) {
+			// element: 指向当前元素的值
+			// index: 指向当前索引
+			// array: 指向Array对象本身
+			console.log(element + ', index = ' + index);
+		});
+		// 对Map集合来说,第一个参数value,第二个参数是key;
+		oneMap.forEach(function (value, key, map) {
+			console.log(value + ', key = ' + key);
+		});
+		// 对于set集合来说,因为没有索引,所以第一个第二个参数都是value
+		secondSet.forEach(function (value, sameValue, set) {
+			console.log(value + ', sameValue = ' + sameValue);
+		});
+		// 另外,js函数调用不要求参数一致,所以如果我们只关心value,可以这么写
+		myArray.forEach(function (element) {
+			console.log(element);
+			//结果是 1 3 5 
+		})
+	</script>
+</body>
+
+</html>

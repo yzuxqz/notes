@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // 第1题 作用域
+        var num1=55;
+        var num2=56;
+        function f1(num,num1)
+        {
+            num=100;
+            num1=100;
+            num2=100;
+            console.log(num,num1,num2);// 100 100 100
+        }
+        f1(num1,num2);
+        console.log(num1);//55
+        console.log(num2);//100
+        // console.log(num);// undefined
+        
+        // 第2题 值类型和引用类型的传递
+        function Person(name,age,salary)
+        {
+            this.name=name;
+            this.age=age;
+            this.salary=salary;
+        }
+        function f1(person){
+            person.name='ls';
+            person=new Person('aa',18,10);
+        }
+        var p=new Person('zs',18,1000);
+        console.log(p.name);// 'zs'
+        f1(p);
+        console.log(p.name);// 'ls'
+        // 为什么这里.name改变了 因为p中存的地址 所以f1传入的也是地址
+        // p和preson指向堆中同一块内存 所以name值会改变
+        // 最后person有又新指向了一个其他内存地址 所以不影响原来的p
+
+        // 两两交换
+        // for(let i=0;i<a.length-1;i++)
+        // {
+        //     for(let j=0;j<a.length-1-i;j++)
+        //     {
+        //         if(a[j]>a[j+1])
+        //         {
+        //             [a[j],a[j+1]]=[a[j+1],a[j]];
+        //         }
+        //     }
+        //     console.log(a);
+        // }
+        // console.log(a);
+        var a=[7,5,1,3,4];
+        quick(a,0,a.length-1);
+        function quick(arr,left,right)
+        {
+            if(arr.length<=1)
+            {
+                return arr;
+            }
+            if(left>right)
+            {
+                return;
+            }
+            var key=arr[left];
+            var l=left;
+            var r=right;
+            while(l<r)
+            {
+
+                while(arr[r]>=key&&l<r)
+                {
+                    r--;
+                }
+                while(arr[l]<=key&&l<r)
+                {
+                    l++;
+                }
+                if(l<r)
+                {
+                    [arr[l],arr[r]]=[arr[r],arr[l]];
+                }
+            }
+            [arr[left],arr[r]]=[arr[r],arr[left]];
+            quick(arr,left,l-1);
+            quick(arr,l+1,right);
+        }
+        console.log(a);
+        // 反转
+        // for(var i=0;i<a.length/2;i++)
+        // {
+        //     [a[i],a[a.length-i-1]]=[a[a.length-i-1],a[i]];
+        // }
+        // console.log(a);
+
+        // 去除数组中重复的元素
+        var b=[1,2,3,1,2,3,3,4,4];
+        var flag=[];
+        // 这里我们用 flag[b[i]]来判断  需要用 indexof //索引值 或者includes //true
+
+        for(var i=0;i<b.length;i++)
+        {
+            if(flag.indexOf(b[i])==-1)
+            {
+                flag.push(b[i]);
+            }
+        }
+        console.log(flag);
+    </script>
+</body>
+</html>

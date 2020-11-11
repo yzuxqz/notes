@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      /**
+       * Definition for a binary tree node.
+       * function TreeNode(val) {
+       *     this.val = val;
+       *     this.left = this.right = null;
+       * }
+       */
+      /**
+       * @param {TreeNode} root
+       * @return {number[][]}
+       */
+      function TreeNode(val) {
+        this.val = val;
+        this.left = this.right = null;
+      }
+      var zigzagLevelOrder = function (root) {
+        var ans = [];
+        dfs(0, root);
+        return ans;
+        function dfs(i, root) {
+          if (!root) return;
+          if (!(ans[i] instanceof Array)) {
+            ans[i] = [];
+          }
+          if (i & 1) {
+            ans[i].unshift(root.val);
+          } else {
+            ans[i].push(root.val);
+          }
+          dfs(i + 1, root.left);
+          dfs(i + 1, root.right);
+        }
+      };
+      var a = [];
+      console.log(a instanceof Array);
+    </script>
+  </body>
+</html>

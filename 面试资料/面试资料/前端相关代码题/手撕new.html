@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script type="text/javascript">
+      // 创造一个对象
+      // 将构造函数的作用域赋给新对象 this执行新创建的对象
+      // 执行构造函数中的代码
+      // 判断:如果传入的对象的类型是对象，则返回新对象；反之直接返回
+      function New() {
+        var obj = {};
+        // obj = Object.create(Constroctor.prototype);
+        var Constroctor = [].shift.call(arguments);
+        var result = Constroctor.apply(obj, arguments);
+        obj.__proto__ = Constroctor.prototype;
+        return typeof result === "object" ? result : obj;
+      }
+      function person(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+      var c = New(person, "zs", 12);
+      var d = New(Object);
+      console.log(c);
+      console.log(d);
+    </script>
+  </body>
+</html>

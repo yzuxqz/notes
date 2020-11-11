@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // function Foo()
+        // {
+        //     getName=function(){ alert(1) };
+        //     return this;
+        // }
+        // Foo.getName=function(){alert(2)};
+        // Foo.prototype.getName=function(){alert(3)};
+        // var getName=function(){alert(4);};
+        // function getName(){alert(5);};
+
+        function Foo()
+        {
+            getName=function(){ alert(4) };
+            return this;
+        }
+        // var getName; 变量和函数名重复 会保留函数 
+        // function getName(){alert(5);}; ! 第二步
+
+        // 变量提升
+        Foo.getName=function(){alert(2)};
+        Foo.prototype.getName=function(){alert(3)};
+
+        // getName=function(){alert(4);}; // ! 第二步  删除 第三步
+        getName=function(){ alert(1) };// 变成 第三步
+
+        // 请写出下列的输出结果
+        Foo.getName(); // 2 
+        getName(); // 4
+        Foo().getName(); // 1 （Foo()).getName() --> window.getName() 
+        getName(); // 1
+        new Foo.getName(); // 2 符号优先级 .最高 new (Foo.getName)(); --> new (function(){alert(2)})()
+        new Foo().getName(); // 3  (new Foo()).getName() --> foo.getName()
+        new new Foo().getName(); // 3  new (new Foo()).getName() --> new (foo.getName)() -->  new (function(){alert(3)}) ();
+    </script>
+</body>
+</html>

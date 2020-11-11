@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        /*
+        面试题：什么是跨域？解决跨域的办法有哪些？
+        1.同源策略
+          -浏览器安全策略
+          -协议名、域名、端口号必须完成一致
+        2.跨域
+            违背同源策略就会产生跨域
+        3.解决跨域
+            jsonp cors 服务器代理
+        */
+       // 创建script标签
+       var script=document.createElement('script');
+       // 设置回调函数
+       function getData(data){
+            console.log(data);
+       }
+       script.src='http://localhost:3000?callback=getData';
+
+       document.body.appendChild(script);
+    </script>
+</body>
+</html>

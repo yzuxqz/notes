@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        /**
+         * @param {string} s
+         * @return {string}
+         */
+        var reverseWords = function (s) {
+            s = s.trim();
+            var s1 = s.replace(/ +/g, ' ');
+            console.log(s1);
+            var len1 = s1.length;
+            var ans = [];
+            var flag = '';
+            for (var i = 0; i < len1; i++) {
+                if (s1[i] != ' ') {
+                    flag += s1[i];
+                } else {
+                    ans.push(flag);
+                    flag = '';
+                }
+            }
+            ans.push(flag);
+            ans.reverse();
+            return ans.join(" ");
+            // console.log(ans.join(" "));
+        };
+        // var a=[1,2,3];
+        var x = reverseWords("a   good   example");
+        console.log(typeof x);
+    </script>
+</body>
+
+</html>

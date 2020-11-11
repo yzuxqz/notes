@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * Definition for singly-linked list.
+    * function ListNode(val) {
+    *     this.val = val;
+    *     this.next = null;
+    * }
+    */
+    /**
+    * @param {ListNode} head
+    * @return {ListNode}
+    */
+    // 方法一：逐个将旧链表的节点插入到新链表
+    var reverseList1 = function(head) {
+        // 新建一个节点 将他复制给node 然后head节点后移
+        // 新建一个节点用来存数据 node的next指向新节点 新节点重新定位
+        var newHead=null;
+        var node;
+        while(head!=null)
+        {
+            // 删除
+            node=head;
+            head=head.next;
+            // 插入
+            node.next=newHead;
+            newHead=node;
+        }
+        return newHead;
+    };
+    // 方法二：使用三指针遍历 
+    var reverseList = function(head)
+    {
+        if(head==null)
+        {
+            return head;
+        }
+        var p0=null;
+        var p1=head;
+        var p2=head.next;
+        while(p1!=null)
+        {
+            p1.next=p0;
+            p0=p1;
+            p1=p2;
+            if(p2!=null)
+            {
+                p2=p2.next;
+            }
+        }
+        return p0;
+    }
+    // 方法三：递归 
+    var reverseList = function(head){
+        if(head==null||head.next==null)
+        return head;
+        var p=reverseList(head.next);
+        head.next.next=head;
+        head.next=null;
+        return p;
+    }
+    var a=[1,2,3,4,5];
+    var x=reverseList(a);
+    console.log(x);
+    </script>
+</body>
+</html>

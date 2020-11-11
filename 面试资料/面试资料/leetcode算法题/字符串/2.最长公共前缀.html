@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+var longestCommonPrefix = function(strs) { 
+    if (strs.length==0 ||strs[0].length==0){return "";} 
+    var ans='';
+    for(let i=0,len1=strs[0].length;i<len1;i++){
+        var sum=0;
+        for(let j=1;j<strs.length;j++)
+        {
+            if(strs[0][i]==strs[j][i])
+            {
+                sum++;
+            }
+        }
+        if(sum==strs.length-1)
+        {
+            ans+=strs[0][i];
+        }else{
+            break;
+        }
+    }
+    console.log(ans);
+    return ans;
+}
+    // var arr;
+    var arr=["dog","racecar","car"];
+    longestCommonPrefix(arr);
+    </script>
+</body>
+</html>

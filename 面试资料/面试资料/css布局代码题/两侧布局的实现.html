@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        /* 方法一: 利用浮动，将左元素浮动起来将右元素的margin-right设置为100px width:auto即可 */
+
+        .left {
+            float: left;
+            width: 100px;
+            height: 100%;
+            background-color: teal;
+        }
+
+        .right {
+            margin-left: 100px;
+            width: auto;
+            height: 100%;
+            background-color: violet;
+        }
+
+        /*方法二  body设置成flex 左元素设置宽度为100px 由于flex布局默认主轴是行 
+        所以只需要将right flex设置为1即可 别忘了设置高度哦
+        body{
+            display: flex;
+        }
+        .left{
+            width: 100px;
+            height: 100%;
+            background-color: violet;
+        }
+        .right{
+            height: 100%;
+            flex: 1;
+            background-color: yellow;
+        }*/
+        /* 第三种方法 利用相对绝对定位 将父元素设置相对定位，左边设置绝对定位，
+        并且宽度设置为100px，将右边元素的margin-left的值设置为100px
+        (absolute 会让元素脱离文档流 right会直接顶上去 所以我们需要设置margin-left div宽度默认是100% 
+        但是当设置了absolute之后宽度不再是100%,宽度由内容宽度决定)
+        有两个方法：
+        1.直接设置 width:100%
+        2.设置left:0px   right:0px;
+        body{
+            position: relative;
+        }
+        .left{
+            position: absolute;
+            width: 100px;
+            height: 100%;
+            background-color: tomato;
+        }
+        .right{
+            margin-left: 100px;
+            height: 100%;
+            background-color: violet;
+        }
+        */
+        /* 第四种也是利用相对元素 只不过这次设置绝对定位的是right 、
+        将top bottom left right设置好元素的大小也就定了
+        body{
+            position: relative;
+        }
+        .left{
+            width: 100px;
+            height: 100%;
+            background-color: yellow;
+        }
+        .right{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 100px;
+            background-color: tomato;
+        }*/
+    </style>
+</head>
+
+<body>
+    <div class="left"></div>
+    <div class="right"></div>
+</body>
+
+</html>

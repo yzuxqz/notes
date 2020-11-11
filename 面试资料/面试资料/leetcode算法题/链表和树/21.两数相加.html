@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // 链表基本操作 代码在下面
+        var list=function LinkedList()
+        {
+            var Node=function(val) {
+                this.val = val;
+                this.next = null;
+            }
+            var head=null;
+            var length=0;
+            this.reverseList=function(){
+                var newAns=null;
+                var node=new Node();
+                while(head!=null)
+                {
+                    // 删除
+                    node = head;
+                    head=head.next;
+
+                    node.next=newAns;
+                    newAns=node;
+                }
+                head=newAns;
+                return newAns;
+            }
+            this.append=function(val){
+                var node=new Node(val);
+                if(head==null){
+                    head=node;
+                }
+                else{
+                    var current=head;
+                    while(current.next){
+                        current=current.next;
+                    }
+                    current.next=node;
+                    length++;
+                }
+            }
+            this.all=function(){
+                var current=head;
+                while(current)
+                {
+                    console.log(current.val);
+                    current=current.next;
+                }
+            }
+            this.toString=function(){
+                var current=head;
+                var str='';
+                var flag=0;
+                while(current)
+                {
+                    if(flag)
+                    str+=','
+                    str+=current.val;
+                    flag++;
+                    current=current.next;
+                }
+                console.log(str);
+                return str;
+            }
+            this.length=function(){
+                return length;
+            }
+            this.Head=function(){
+                return head;
+            }
+        }
+        var addTwoNumbers=function(l1, l2) {
+                if(l1==null)
+                {
+                    return l2;
+                }   
+                if(l2==null)
+                {
+                    return l1;
+                }
+                var len1=l1.length;
+                var len2=l2.length;
+                var minn=Math.min(len1,len2);
+                var xx=l1.Head();
+                var yy=l2.Head();
+                var i=0;
+                var ans=new list();
+                var r=0;
+                while(i<=minn)
+                {
+                    i++;
+                    ans.append((r+xx.val+yy.val)%10);
+                    r=(r+xx.val+yy.val)/10|0;
+                    console.log(i,xx.val,yy.val);
+                    xx=xx.next;
+                    yy=yy.next;
+                }
+                while(xx)
+                {
+                    ans.append((r+xx.val)%10);
+                    r=(r+xx.val)/10|0;
+                    xx=xx.next;
+                }
+                while(yy) 
+                {
+                    ans.append((r+yy.val)%10);
+                    r=(r+yy.val)/10|0;
+                    yy=yy.next;
+                }
+                return ans;
+        };
+        
+        var a=new list();
+        a.append(2);
+        a.append(4);
+        a.append(3);
+        var b=new list();
+        b.append(8);
+        b.append(5);
+        a.toString();
+        b.toString();
+        addTwoNumbers(a,b);
+    // var a=reverseList(1->2->3->4->5->NULL);
+    // console.log(a);
+    // addTwoNumbers([2,4,3],[5,6,4]);
+    </script>
+
+    <script type="text/javascript">
+        // ac代码
+        var addTwoNumbers=function(l1, l2) {
+                if(l1==null)
+                {
+                    return l2;
+                }   
+                if(l2==null)
+                {
+                    return l1;
+                }
+                var ans=new ListNode(0);
+                var head=ans;
+                var r=0;
+                while(l1&&l2)
+                {
+                    head.next=new ListNode((r+l1.val+l2.val)%10);
+                    r=(r+l1.val+l2.val)/10|0;
+                    l1=l1.next;
+                    l2=l2.next;
+                    head=head.next;
+                }
+                while(l1)
+                {
+                    head.next=new ListNode((r+l1.val)%10);
+                    r=(r+l1.val)/10|0;
+                    l1=l1.next;
+                    head=head.next;
+                }
+                while(l2) 
+                {
+                    head.next=new ListNode((r+l2.val)%10);
+                    r=(r+l2.val)/10|0;
+                    l2=l2.next;
+                    head=head.next;
+                }
+                if(r)
+                {
+                    head.next=new ListNode(r%10);
+                    head=head.next;
+                }
+                return ans.next;
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var quick=function(arr,left,right){
+            if(arr.length<=1)
+            {
+                return arr;
+            }
+            if(left>right)
+            {
+                console.log(arr,left,right);
+                return ;
+            }
+            var key=arr[left];
+            var l=left;
+            var r=right;
+            while(l!=r)
+            {
+                while(arr[r]>=key&&l<r)
+                {
+                    r--;
+                }
+                while(arr[l]<=key&&l<r)
+                {
+                    l++;
+                }
+                if(l<r)
+                {
+                    [arr[l],arr[r]]=[arr[r],arr[l]];
+                }
+            }
+            [arr[left],arr[r]]=[arr[r],arr[left]];
+            quick(arr,left,l-1);
+            quick(arr,l+1,right);
+        }
+        var a=[2,3,4,6,1,5];
+        quick(a,0,a.length-1);
+        console.log(a);
+    </script>
+</body>
+</html>

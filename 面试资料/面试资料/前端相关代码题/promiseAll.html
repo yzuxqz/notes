@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      let p1 = new Promise((resolve, reject) => {
+        reject(123);
+      });
+      let p2 = new Promise((resolve, reject) => {
+        resolve(321);
+      });
+      let p3 = new Promise((resolve, reject) => {
+        resolve(3);
+      });
+      Promise.all2 = function (Promises) {
+        return new Promise((resolve, reject) => {
+          let len = Promises.length;
+          let count = 0;
+          let result = new Array(len);
+          for (let i = 0; i < len; i++) {
+            Promise.resolve(Promises[i]).then(
+              (value) => {
+                count++;
+                result[i] = value;
+                if (count == len) {
+                  return resolve(result);
+                }
+              },
+              (reason) => {
+                return reject(reason);
+              }
+            );
+          }
+        });
+      };
+      Promise.all2([p1, p2, p3]).then(
+        (value) => {
+          console.log(value);
+        },
+        (reason) => {
+          console.log("reason", reason);
+        }
+      );
+    </script>
+  </body>
+</html>

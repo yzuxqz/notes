@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function mysetInterval(fn, delay) {
+        var timer = setTimeout(() => {
+          console.log(this);
+          fn.call(this);
+          mysetInterval(fn, delay);
+          clearTimeout(timer);
+        }, delay);
+      }
+      function fn() {
+        console.log("我被调用了");
+      }
+      mysetInterval(fn, 1000);
+    </script>
+  </body>
+</html>

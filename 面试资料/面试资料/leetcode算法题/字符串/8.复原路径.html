@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        /**
+         * @param {string} s
+         * @return {string[]}
+         */
+        var isValid = function (s) {
+            if (s.length > 3 || (s[0] == '0' && s.length > 1))
+                return false;
+            var x = s - '0';
+            return x >= 256 ? false : true;
+        }
+        var dfs = function (s, index, str) {
+            if (index == 4) {
+                if (s.length == 0) {
+                    vs.push(str);
+                }
+            } else {
+                for (var i = 1; i <= 3 && i <= s.length; i++) {
+                    if (!isValid(s.substr(0, i))) {
+                        continue;
+                    }
+                    if (str.length) {
+                        dfs(s.substr(i), index + 1, str + '.' + s.substr(0, i));
+                    } else {
+                        dfs(s.substr(i), index + 1, str + s.substr(0, i));
+                    }
+                }
+            }
+            return;
+        }
+        var vs = [];
+        var restoreIpAddresses = function (s) {
+            var str = '';
+            vs = [];
+            dfs(s, 0, str);
+            return vs;
+        };
+        restoreIpAddresses("0000");
+        // 字母使用arr[0].charCodeAt();转成number格式
+        // 普通的字符串 通过 - '0' 变成number
+        // 数组变成字符串通过 join("");
+        // 数变成字符串通过 +""
+        // split()方法是对字符串的操作；splice()和slice()是对数组的操作。slice()也可用于字符串。
+    </script>
+</body>
+
+</html>

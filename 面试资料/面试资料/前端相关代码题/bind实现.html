@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    Function.prototype.myBind2 = function (context, ...arg1) {
+      var self = this;
+      return function F(...arg2) {
+        console.log(this);
+        if (this instanceof F) {
+          return new self(...arg1, ...arg2);
+        } else {
+          return self.apply(context, arg1.concat(...arg2));
+        }
+      };
+    };
+
+    function A(ans) {
+      console.log(this.name);
+      console.log(ans);
+    }
+    var person = {
+      name: "zs",
+    };
+    var name = "ls";
+    var b = A.myBind2(person, 55);
+    //   b();
+    console.log("-----------------------");
+    var c = new b(12);
+    //   console.log(c);
+    // c();
+  </script>
+</body>
+
+</html>

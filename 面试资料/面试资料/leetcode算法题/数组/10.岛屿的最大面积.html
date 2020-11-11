@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var dx=[1,-1,0,0];
+        var dy=[0,0,-1,1];
+        var vis=[];
+        var bfs=function(x,y,mp){
+            init(mp);
+            var len1=mp.length;
+            var len2=mp[x].length;
+            var q=[];
+            q.push([x,y]);
+            vis[x][y]=1;
+            var sum=1;
+            while(q.length)
+            {
+                var ary=q.pop();
+                var x=ary[0],y=ary[1];
+                for(var i=0;i<4;i++)
+                {
+                    var xx=x+dx[i],yy=y+dy[i];
+                    if(xx>=0&&xx<len1&&yy>=0&&yy<len2&&mp[xx][yy]==1&&vis[xx][yy]==0)
+                    {
+                        vis[xx][yy]=1;  
+                        sum++;
+                        q.push([xx,yy]);
+                    }
+                }
+            }
+            return sum;
+        }
+        var init=function(mp){
+            for(var i=0;i<mp.length;i++)
+            {
+                vis[i]=new Array();
+                for(var j=0;j<mp[i].length;j++)
+                {
+                    vis[i][j]=0;
+                }
+            }
+            return ;
+        }
+        var maxAreaOfIsland = function(mp) {
+            var ans=0;
+            init(mp);
+            for(var i=0;i<mp.length;i++)
+            {
+                for(var j=0;j<mp[i].length;j++)
+                {
+                    // vis[i][j]=mp[i][j];
+                    if(mp[i][j]==1)
+                    ans=Math.max(ans,bfs(i,j,mp));
+                }
+            }
+            console.log(ans);
+        };
+        var arr=[[0,0,1,1,0,0,0,1,0,0,0,0,0]];
+        maxAreaOfIsland(arr);
+    </script>
+</body>
+</html>

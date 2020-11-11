@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+    *{
+        margin: 0;
+        padding: 0;
+       
+    }
+    #wrap{
+        width: 500px;
+        height: 500px;
+        background: grey;
+        /* flex水平垂直居中 */
+        /* 新版本 
+        display: flex;
+        justify-content: center;
+        align-items: center; */
+
+        /* 老版本
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;*/
+        
+        /* position: relative; */
+    }
+    #wrap .box{
+        /* position: absolute; */
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+        top: 50%;
+        left: 50%;
+        /*方法三
+        transform: translate(-50%,-50%);
+        /*方法二
+        margin-left: -100px;
+        margin-top: -100px;
+        /* 方法1
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;*/
+    }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div class="box"></div>
+    </div>
+</body>
+</html>

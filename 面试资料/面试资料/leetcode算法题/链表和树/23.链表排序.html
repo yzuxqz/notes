@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * Definition for singly-linked list.
+    * function ListNode(val) {
+    *     this.val = val;
+    *     this.next = null;
+    * }
+    */
+    /**
+    * @param {ListNode} head
+    * @return {ListNode}
+    */
+    var sortList = function(head) {
+        if(head==null||head.next==null)
+        {
+            return head;
+        }
+        return mergeSort(head);
+    };
+    var mergeSort=function(head){
+        if(head.next==null)
+        {
+            return head;
+        }
+        var l=head;
+        var r=head;
+        var flag;
+        while(r&&r.next){
+            flag=l;
+            l=l.next;
+            r=r.next.next;
+        }
+        flag.next=null;
+        var left=mergeSort(head);
+        var right=mergeSort(l);
+        return merge(left,right);
+    }
+    var merge=function(l1,l2){
+        if(!l1)
+        {
+            return l2;
+        }
+        if(!l2)
+        {
+            return l1;
+        }
+        var current=new ListNode(0);
+        var index=current;
+        while(l1&&l2)
+        {
+            if(l1.val<=l2.val)
+            {
+                current.next=l1;
+                current=current.next;
+                l1=l1.next;
+            }else{
+                current.next=l2;
+                current=current.next;
+                l2=l2.next;
+            }
+        }
+        if(l1)
+        {
+            current.next=l1;
+        }else{
+            current.next=l2;
+        }
+        return index.next;
+    }
+    </script>
+</body>
+</html>

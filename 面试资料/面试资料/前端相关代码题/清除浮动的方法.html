@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        /*
+            清除浮动 的两种常用的方法
+            1.父 添加
+            overflow: hidden;
+            overflow:auto;
+            2.父后面添加after
+                content='';
+                display=black;
+                clear=both;
+        */
+        .div1{
+            /* height: 200px; */
+            /* background: seagreen; */
+            border: 1px solid red;
+        }
+        .div1::after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .div2{
+            height: 200px;
+            background:blue;
+            border: 1px solid red;
+        }
+        .left{
+            /* display: inline-block; */
+            float: left;
+            width: 20%;
+            background: #ddd;
+            height: 100px;
+            border: 1px solid red;
+        }
+        .right{
+            /* display: inline-block; */
+            float: left;
+            width: 30%;
+            background: #DDD;
+            height: 200px;
+            border: 1px solid red;
+        }
+        /*
+            补充 display: inline-block; 中间有空格的处理方法
+            父 字体大小设置为0 font-size=0px
+            子 添加float：left
+         */
+    </style>
+</head>
+<body>
+    <div class="div1">
+        <div class="left">Left</div>
+        <div class="right">Right</div>
+    </div>
+    <div class="div2">31231232</div>
+    
+</body>
+</html>

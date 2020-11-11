@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+    /**
+    * Initialize your data structure here.
+    */
+    var AllOne = function() {
+        this.map=new Map();
+        this.maxstr='';
+        this.max=null;
+        this.minstr='';
+        this.min=null;
+    };
+
+    /**
+    * Inserts a new key <Key> with value 1. Or increments an existing key by 1. 
+    * @param {string} key
+    * @return {void}
+    */
+    AllOne.prototype.inc = function(key) {
+        if(this.map.has(key))
+        {
+            var x=this.map.get(key);
+            this.map.delete(key);
+            this.set(key,x+1);
+            if(max==null)
+            {
+                max=x;
+            }
+        }
+        else{
+            this.map.set(key,1);
+            if(max==null)
+            {
+                max=x;
+            }
+        }
+    };
+
+    /**
+    * Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. 
+    * @param {string} key
+    * @return {void}
+    */
+    AllOne.prototype.dec = function(key) {
+
+    };
+
+    /**
+    * Returns one of the keys with maximal value.
+    * @return {string}
+    */
+    AllOne.prototype.getMaxKey = function() {
+
+    };
+
+    /**
+    * Returns one of the keys with Minimal value.
+    * @return {string}
+    */
+    AllOne.prototype.getMinKey = function() {
+
+    };
+
+    /**
+    * Your AllOne object will be instantiated and called as such:
+    * var obj = new AllOne()
+    * obj.inc(key)
+    * obj.dec(key)
+    * var param_3 = obj.getMaxKey()
+    * var param_4 = obj.getMinKey()
+    */
+    </script>
+</body>
+</html>

@@ -1,122 +1,31 @@
-# 模块化开发
+# webpack安装
 
-## ES6模块化规范
-
-1. 每一个js文件都是一个独立的模块
-2. ==导入模块成员==使用==import==关键字
-3. ==暴露模块成员==使用==export==关键字
-
-- Node.js中通过babel进行ES6模块化
-
-  1. npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/node
-
-  2. npm install --save @babel/polyfill
-
-  3. 创建==babel.config.js==配置文件内容
-
-     ```javascript
-     const presets = [
-     	["@babel/env", {
-     		targets: {//支持的浏览器版本
-     			edge: "17",
-     			firefox: "60",
-     			chrome: "67",
-     			safari: "11.1"
-     		}
-     	}]
-     ]
-     
-     module.exports = {
-     	presets
-     }
-     ```
-
-  4. 通过npx babel-node ./index.js执行代码
-
-## ES6模块化基本语法
-
-- 默认导出：exports default (暴露本模块中的私有成员)
-
-  ```javascript
-  let a = 10;
-  let c = 20;
-  let d = 30;
-  
-  function show () {
-  	console.log('111');
-  }
-  export default {
-  	a,
-  	c,
-  	show
-  }
-  ```
-
-  ==注意==：在每个模块中只能使用唯一的一次exprot default，否则会报错
-
-- 默认导入：import 接收名称 from ‘模块标识符’
-
-  ```javascript
-  import m1 from './m1.js'
-  
-  console.log(m1);
-  console.log(m1.a);
-  ```
-
-- 按需导出
-
-  ```javascript
-  export let s1='aaa';
-  export let s2='ccc';
-  export function say(){
-  	console.log('say');
-  }
-  ```
-
-  ==注意==：export按需导出可以用多次
-
-- 按需导入
-
-  ```javascript
-  import {
-  	s1,
-  	s2
-  } from './m1.js'
-  console.log(s1);
-  ```
-
-- 直接导入并执行模块代码
-
-  import './m2.js'
+![](D:\桌面\notes\Webpack\assets\webpack安装.png)
 
 # webpack的基本使用
 
-1. npm install webpack webpack-cli -D 
+文件结构
 
-2. 在项目根目录中，创建名为==webpack.config.js==的webpack配置文件
+![](D:\桌面\notes\Webpack\assets\webpack基本使用.png)
 
-3. 在webpack的配置文件中，初始化
+src：源文件目录
 
-   module.exports = {
+dist：webpack编译处理后的文件目录
 
-   mode: ' development ' // mode 用来指定构建模式  production为产品发布模式
+全局安装webpack后执行命令：webpack ./src/main.js ./dist/bundle.js
 
-   }
+![](D:\桌面\notes\Webpack\assets\webpack步骤1.png)
 
-4. 在package.json配置文件中的scripts节点下，新增dev脚本
+![](D:\桌面\notes\Webpack\assets\webpack步骤2.png)
 
-   “scripts”：{
-
-   ​	“dev”:"webpack"//script节点下的脚本，可以通过npm run运行
-
-   }
-
-5. 在终端中运行npm run dev 命令，启动webpack进行项目打包
+![](D:\桌面\notes\Webpack\assets\webpack步骤3.png)
 
 # 配置打包的入口与出口
 
+![](D:\桌面\notes\Webpack\assets\webpack配置.png)
+
 ```javascript
-const path = require('path')
+const path = require('path')//node核心模块
 module.exports = {
 	mode: 'development', //编译模式
 	entry: path.join(__dirname, './src/index.js'), //入口文件指定路径
@@ -127,72 +36,77 @@ module.exports = {
 }
 ```
 
-# 配置webpack的自动打包
+# 配置webpack打包命令
 
-1. npm install webpack-dev-server -D 安装支持自动打包的工具
-2. 修改package.json的scripts节点的dev命令为“webpack-dev-server”
-3. 将html文件中的.script脚本引用路径改为“/bundle.js”
-4. npm run dev
-5. 浏览器访问http://loacalhost:8080
+1. npm init创建package.json文件
+2. 在scripts属性里配置打包命令
+3. 这里使用命令会优先选择局部安装的webpack，其次才是全局安装的webpack
 
-# 配置html-webpack-plugin生成预览页面
+![](D:\桌面\notes\Webpack\assets\package中定义启动.png)
 
-1. 运行npm install html-webpack-plugin -D
-
-2. 修改webpack.config.js文件头部区域
-
-   ```javascript
-   const HtmlWebpackPlugin = require('html-webpack-plugin');
-   const htmlPlugin = new HtmlWebpackPlugin({//创建插件的实例对象
-   	template: './src/index.html', //要复制的文件
-   	filename: 'index.html' //要生成的文件名称，文件在内存中，目录中不显示
-   })
-   ```
-
-3. 修改webpack.config.js文件中向外暴露的配置对象
-
-   ```javascript
-   plugins: [htmlPlugin]//plugins数组时webpack打包期间会用到的一些插件列表
-   ```
-
-4. 重新npm run dev打包
-
-# 配置自动打包相关参数
-
-- --open 打包完成后自动打开浏览器页面
-- --host 配置id地址
-- --port 配置端口
-
-在==package.json==中修改
-
-```javascript
-	"scripts": {
-		"dev": "webpack-dev-server --open --host 127.0.0.1 --prot 8888"
-	}
+```json
+{
+  "name": "meetwebpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"//npm run build执行命令
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {//开发环境依赖
+    "webpack": "^3.6.0"
+  }
+}
 ```
 
-# webpack中的加载器
+# loader
 
-### 通过loader打包非js模块
+![](D:\桌面\notes\Webpack\assets\loader.png)
 
 - 作用：协助webpack进行打包，webpack只能打包.js的文件，当文件后缀不是,js时，会去webpack的配置文件中找loader
-
 - 调用过程：
 
 #### 打包css文件
 
-1. npm install style-loader css-loader -D 安装处理css文件的loader
+1. npm install css-loader --save-dev,安装编译css文件的loader
 
-2. 在webpack.config.js的module=>rules数组中，添加loader规则
+2. 在webpack.config.js的module=>rules数组中，添加loader规则，此时只是编译了css，样式并不会生效
 
-   ```javascript
-   	module: {
-   		rules: [{
-   			test: /\.css$/,//文件后缀名
-   			use: ['style-loader', 'css-loader']//该文件后缀名使用的插件，这里顺序不能换，先调用css，再调用style，最后返回给webpack
-   		}]
-   	}
-   ```
+3. npm install style-loader --save-dev，安装渲染DOM的loader
+
+4. 添加loader规则
+
+   ![](D:\桌面\notes\Webpack\assets\css文件处理.png)
+
+   ![](D:\桌面\notes\Webpack\assets\css文件处理-css-loader.png)
+
+   ![](D:\桌面\notes\Webpack\assets\css文件处理-style-loader.png)
+
+```json
+const path = require('path')
+module.exports={
+  entry:'./src/main.js',//要在main中引入css
+  output: {
+    path:path.resolve(__dirname,'dist'),
+    filename:'bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        //正则匹配
+        test: /\.css$/,
+        //css-loader只负责将css文件进行加载
+        //style-loader负责将样式添加到DOM中
+        //使用多个loader时，是从右向左的
+        use: [ 'style-loader','css-loader' ]
+      }
+    ]
+  }
+}
+```
 
 ### 配置postCSS自动添加css的兼容前缀
 
@@ -221,90 +135,332 @@ module.exports = {
    	}
    ```
 
-### 打包样式中的图片和字体文件
+### 打包图片和字体文件
 
 1. npm i url -loader file-loader -D
 
 2. 在webpack.config.js的moudle的rules数组中，添加loader规则
 
+   ![](D:\桌面\notes\Webpack\assets\图片处理file-loader.png)
+   
+   ![](D:\桌面\notes\Webpack\assets\file-loader修改文件名称.png)
+   
+   
+   
    ```javascript
    	module: {
    		rules: [{
    			test: /\.css$/, //文件后缀名
    			use: ['style-loader', 'css-loader', 'postcss-loader'] //该文件后缀名使用的插件,顺序从后往前
-   		}, {
-   			test: /\.jpg|png|gif|jpeg|bmp|ttf|eot|woff|woff2$/,
-   			use: ['url-loader?limit=400000']//limit表示小于该大小的图片才会被转为base64的图片
-   		}]
+   		},      {
+           test: /\.(png|jpg|gif)$/i,
+           use: [
+             {
+               loader: 'url-loader',
+               options: {
+                 //当加载的图片，小于limit时，会将图片编译成base64字符串形式
+                 //当加载的图片，大于limit时，需要使用file-loader模块进行加载
+                 limit: 10000,
+               },
+             },
+           ],
+         }]
    	}
    ```
 
-### 打包处理js文件中的高级语法
+### ES6转ES5
 
-1. 安装babel转化器相关的包：npm i babel-loader @babel/core @babel/runtime -D
+![](D:\桌面\notes\Webpack\assets\babel-loader.png)
 
-2. 安装babel语法插件相关的包：npm i @babel/preset-env @babel/plugin-transform-runtime @babel/plugin-proposal-class-properties -D
+```json
+{
+  test: /\.js$/,
+  //这些文件不会被编译处理
+  exclude: /(node_modules|bower_components)/,
+  use: {
+    loader: 'babel-loader',
+    options: {
+      presets: ['es2015']
+    }
+  }
+}
+// npm run build
+```
 
-3. 在项目根目录中，创建babel配置文件babel.config.js并初始化
+# 在webpack项目中使用vue
 
-   ```javascript
-   module.exports = {
-   	presets: ['@babel/preset-env'], //babel语法相关
-   	plugins: ['@babel/plugin-transform-runtime', '@babel/plugin-proposal-calss-properties'] //babel插件相关
-   }
+![](D:\桌面\notes\Webpack\assets\引入vue.png)
+
+==注意==：
+
+1. 如果报错，就是vue的版本不对，不支持template标签，此时需要在webpack.config.js中添加如下属性
+
+   ```json
+     resolve:{
+       //别名
+       alias:{
+         'vue$':'vue/dist/vue.esm.js'
+       }
+     }
    ```
 
-4. 在webpack.config.js的moudle的rules的数组中，添加loader规则，增加排除项，排除node_moudels中的js文件
+2. 一般在index.html中不写其他的html，所以将el中的标签用temolate替换掉
 
-   ```javascript
-   		{
-   			test: /\.js$/,
-   			use: ['babel-loader'],
-   			exclude: /node_modules///排除node_modules中的js文件
-   		}
-   ```
+main.js
 
-### webpack中配置vue组件的加载器
-
-#### Vue单文件组件
-
-- template 组件的模板区域
-- script 业务逻辑区域
-- style 样式区域
-
-1. npm i vue-loader vue-template-compiler -D
-
-2. 在webpack.config.js配置文件，添加vue-loader的配置项
-
-   ```javascript
-   const VueLoaderPlugin = require('vue-loader/lib/plugin')
-   //module。exports中的plugins属性中添加
-   plugins: [htmlPlugin, new VueLoaderPlugin()], //需要new一个Vue插件的实例，来引入这个插件
-   module的rules属性中添加
-   {
-   			test: /\.vue$/,
-   			use: 'vue-loader'
-   		}
-   ```
-
-### 在webpack项目中使用vue
-
-1. npm i vue -s安装vue
-2. 在src 的index.js文件中，通过import Vue from 'vue'来导入vue 的构造函数
-3. 创建vue的实例对象，并指定要控制的el区域，在index.html中有相应的id组件
-4. 通过render函数渲染App根组件
-
-```javascript
-import Vue from 'vue' //导入包得到一个构造函数，相当于引入js文件
-import App from './components/App.vue' //导入单文件组件
-
-const vm = new Vue({
-	el: '#app',//指定el区域
-	render: h => h(App)//render函数指定要渲染的根组件
+```js
+require('./css/normal.css')
+import Vue from 'vue'
+new Vue({
+  el:'#app',
+  template:'<h2>{{message}}</h2>',
+  data:{
+    message:'Hello World'
+  }
 })
 ```
 
-==注意==：要用render函数渲染组件，不能用component和template，因为在webpack中导入的vue是阉割版的vue，只支持render函数渲染组件
+index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+<div id="app"></div>
+</body>
+<script src="dist/bundle.js"></script>
+</html>
+```
+
+## el和template区别
+
+![](D:\桌面\notes\Webpack\assets\el和template区别1.png)
+
+![](D:\桌面\notes\Webpack\assets\el和template区别2.png)
+
+## Vue组件化开发引入
+
+![](D:\桌面\notes\Webpack\assets\vue组件化开发引入.png)
+
+## .vue文件打包
+
+![](D:\桌面\notes\Webpack\assets\vue文件封装处理.png)
+
+==注意==：
+
+1. vue-loader在14版本之后要使用loader必须配置插件，否则会报错，如果不用插件需要降低vue-loader版本
+2. 如果在import引入时需要省略.vue后缀，则在webpack.config.js中添加如下配置
+
+```json
+resolve:{//一般用来解决路径问题
+  extensions:['.js','.css','.vue'],//解决文件后缀名问题
+  //别名
+  alias:{//解决vue版本问题
+    'vue$':'vue/dist/vue.esm.js'
+  }
+}
+```
+
+# plugin
+
+文件结构
+
+![](D:\桌面\notes\Webpack\assets\plugin文件结构.png)
+
+![](D:\桌面\notes\Webpack\assets\认识plugin.png)
+
+## 添加版权的Plugin
+
+![](D:\桌面\notes\Webpack\assets\版权plugin.png)
+
+## 打包html的Plugin
+
+![](D:\桌面\notes\Webpack\assets\打包html的plugin.png)
+
+## js压缩的Plugin
+
+开发阶段不建议丑化
+
+![](D:\桌面\notes\Webpack\assets\js压缩的plugin.png)
+
+# 搭建本地服务器
+
+![](D:\桌面\notes\Webpack\assets\搭建本地服务器.png)
+
+```json
+devServer:{
+  //服务哪一个文件夹
+  contentBase:'./dist',
+  //是否需要实时监听
+  inline:true
+}
+```
+
+==注意==：
+
+1. 在package.json文件中，scripts属性里添加简化命令
+
+   ```json
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1",
+     "build": "webpack",//用于打包处理
+     "dev": "webpack-dev-server"//用于运行，如果要自动打开网页，加上--open
+   }
+   ```
+
+# webpack配置的分离
+
+文件结构
+
+![](D:\桌面\notes\Webpack\assets\配置分离文件结构.png)
+
+1. 将webpack.config中的代码分为开发依赖和生产依赖
+
+2. build文件目录存放分离的配置文件
+
+3. 其中base.config存公共的配置，如出入口，loader，部分plugins
+
+   ```json
+   const path = require('path')
+   const webpack = require('webpack')
+   const HtmlWebpackPlugin=require('html-webpack-plugin')
+   const UglifyjsWebpackPlugin=require('uglifyjs-webpack-plugin')
+   module.exports={
+     entry:'./src/main.js',
+     output: {
+       //上一层文件夹中的dist
+       path:path.resolve(__dirname,'../dist'),
+       filename:'bundle.js',
+       // publicPath:'dist/'
+     },
+     module: {
+       rules: [
+         {
+           //正则匹配
+           test: /\.css$/,
+           //css-loader只负责将css文件进行加载
+           //style-loader负责将样式添加到DOM中
+           //使用多个loader时，是从右向左的
+           use: [ 'style-loader','css-loader' ]
+         },
+         {
+           test: /\.(png|jpg|gif)$/i,
+           use: [
+             {
+               loader: 'url-loader',
+               options: {
+                 //当加载的图片，小于limit时，会将图片编译成base64字符串形式
+                 //当加载的图片，大于limit时，需要使用file-loader模块进行加载
+                 limit: 10000,
+               },
+             },
+           ],
+         },
+         {
+           test: /\.js$/,
+           //这些文件不会被编译处理
+           exclude: /(node_modules|bower_components)/,
+           use: {
+             loader: 'babel-loader',
+             options: {
+               presets: ['es2015']
+             }
+           }
+         },
+         {
+           test:/\.vue$/,
+           use:['vue-loader']
+         }
+       ]
+     },
+     resolve:{//一般用来解决路径问题
+       extensions:['.js','.css','.vue'],
+       //别名
+       alias:{
+         'vue$':'vue/dist/vue.esm.js'
+       }
+     },
+     plugins:[
+       new webpack.BannerPlugin('最终版权归xqz所有'),
+       new HtmlWebpackPlugin({
+         template:'index.html'
+       }),
+       // new UglifyjsWebpackPlugin()
+     ],
+     // devServer:{
+     //   //服务哪一个文件夹
+     //   contentBase:'./dist',
+     //   //是否需要实时监听
+     //   inline:true
+     // }
+   }
+   ```
+
+4. dev.config存放开发配置，如搭建的本地服务器
+
+   ```json
+   const webpackMerge=require('webpack-merge')
+   const baseConfig = require('./base.config')
+   module.exports=webpackMerge.merge(baseConfig,{
+     devServer:{
+       //服务哪一个文件夹
+       contentBase:'./dist',
+       //是否需要实时监听
+       inline:true
+     }
+   })
+   
+   ```
+
+5. prod.config存放生产配置，如压缩js代码
+
+   ```json
+   const UglifyjsWebpackPlugin=require('uglifyjs-webpack-plugin')
+   const baseConfig= require('./base.config')
+   const webpackMerge = require('webpack-merge')
+   module.exports = webpackMerge.merge(baseConfig,{
+     plugins:[
+       // new webpack.BannerPlugin('最终版权归xqz所有'),
+       // new HtmlWebpackPlugin({
+       //   template:'index.html'
+       // }),
+       new UglifyjsWebpackPlugin()
+     ]
+   })
+   ```
+
+6. 利用npm install webpack-merage --save-dev,下载合并配置的模块，利用webpackMerge.merge方法进行合并
+
+7. 合并完修改package.json中的scripts的build和dev指令
+
+   ```json
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1",
+       //--config标识执行的配置是生产
+     "build": "webpack --config ./build/prod.config.js",
+         //--config标识执行的配置是开发
+     "dev": "webpack-dev-server --open --config ./build/dev.config.js"
+   },
+   ```
+
+8. 修改base.config中的入口和出口，因为是相对路径，此时是在build文件夹下，而不是之前webpack.config所在的根目录
+
+   ```json
+     entry:'../src/main.js',
+     output: {
+       //上一层文件夹中的dist
+       path:path.resolve(__dirname,'../dist'),
+       filename:'bundle.js',
+       // publicPath:'dist/'
+     },
+   ```
+
+
 
 # webpack打包发布
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>1px物理像素实现</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+    <!-- 像素比 = 物理像素 / css像素 -->
+</head>
+
+<body>
+    <div id="box"></div>
+    <script type="text/javascript">
+        //  css像素里面所写的px 并非真正的物理像素 只是相当于物理像素 
+        // 当我们需要1px物理像素的时候 当dpr为1的时候 直接就是1px物理像素 
+        // 当dpr为其他值的时候 我们需要讲css像素 变成1/dpr 就可以实现 
+        window.onload = function () {
+            // 像素比
+            var dpr = window.devicePixelRatio;
+            var width = document.documentElement.clientWidth;
+            console.log(dpr);
+            var scale = 1 / dpr;
+            // 获取meta标签
+            var metaNode = document.querySelector('meta[name="viewport"]');
+            metaNode.setAttribute('content', '"width=device-width, initial-scale=' + scale + ',user-scalable=no"');
+            // 页面中元素的宽度，高度，比例反向乘过来
+            var html = document.querySelector('html');
+            html.style.fontSize = width * dpr + 'px';
+        }
+    </script>
+</body>
+
+</html>
